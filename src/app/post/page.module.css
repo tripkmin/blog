@@ -1,0 +1,174 @@
+.postListSection {
+  padding: 25px 0px;
+  position: relative;
+}
+
+.postSummaryBox {
+  display: flex;
+  align-items: baseline;
+  padding-bottom: 20px;
+}
+
+.postSummaryBox h3 {
+  margin-right: 3px;
+}
+
+.postList > div:not(:first-child) {
+  margin-top: 10px;
+}
+
+.postWrapper {
+  display: flex;
+  width: 100%;
+  border: 1px solid var(--sub-border-light-color);
+  border-radius: 10px;
+  padding: 15px 20px;
+  transition: all 0.2s;
+  background-color: #ffffff10;
+}
+
+body[data-theme='dark'] .postWrapper {
+  border: 1px solid var(--sub-border-dark-color);
+}
+
+.postWrapper:hover {
+  /* transform: scale(1.01); */
+  box-shadow: 0px 15px 39px -20px rgba(0, 0, 0, 0.09);
+  -webkit-box-shadow: 0px 15px 39px -20px rgba(0, 0, 0, 0.09);
+  -moz-box-shadow: 0px 15px 39px -20px rgba(0, 0, 0, 0.09);
+}
+/* .postWrapper > div:nth-child(n + 2) {
+  margin-top: 5px;
+} */
+
+.postLeft {
+  flex-grow: 1;
+}
+
+.postRight {
+  display: flex;
+  gap: 5px;
+  align-items: flex-end;
+}
+
+.sticky {
+  position: sticky;
+}
+
+.badge {
+  font-size: 13px;
+  border-radius: 3px;
+  padding: 1px 5px;
+  color: #777;
+  margin-right: 5px;
+}
+
+.seriesBadge {
+  background-color: var(--series-color);
+}
+
+.tagBadge {
+  background-color: var(--tag-color);
+}
+
+.techIconWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 2px;
+  background-color: var(--light-background-color);
+  border-radius: 5px;
+  border: 1px solid var(--main-border-light-color);
+  background-color: var(--light-background-color);
+  /* overflow: hidden; */
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  transition: all 0.2s;
+  position: relative;
+}
+
+body[data-theme='dark'] .techIconWrapper {
+  border: 1px solid var(--main-border-dark-color);
+  background-color: #777;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
+}
+
+.techIconWrapper::before {
+  position: absolute;
+  top: -25px;
+  /* left: -80px; */
+  background-color: #777;
+  border-radius: 5px;
+  color: #fff;
+  content: attr(aria-label);
+  padding: 0 7px;
+  text-transform: none;
+  transition: all 0.2s ease;
+  max-width: 100px;
+  line-height: 160%;
+  font-size: 12px;
+  opacity: 0;
+  pointer-events: none;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  word-break: break-all;
+  text-overflow: ellipsis;
+}
+
+.techIconWrapper:focus::before,
+.techIconWrapper:hover::before {
+  opacity: 1;
+  transition: all 0.2s;
+}
+
+.techBadge {
+  background-color: var(--tech-color);
+}
+
+.infoBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.infoBox > div {
+  display: flex;
+  /* align-items: center; */
+}
+
+.infoBox > div > span {
+  margin-right: 12px;
+}
+
+.Btn {
+  font-size: 16px;
+  color: #777;
+  border: 0px;
+  background-color: #fff;
+  padding: 3px 5px;
+  border-radius: 6px;
+  margin-right: 5px;
+}
+
+.tagBtn {
+  background-color: #eee;
+}
+
+.ulMargin {
+  margin-left: 19px;
+}
+
+@media screen and (max-width: 700px) {
+  .techIconWrapper {
+    width: 30px;
+    height: 30px;
+  }
+
+  .techIconWrapper img {
+    width: 90%;
+    height: 90%;
+  }
+}
