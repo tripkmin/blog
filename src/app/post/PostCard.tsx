@@ -48,7 +48,7 @@ export default function PostCard(post: Post) {
               return (
                 <div
                   key={idx}
-                  className={`${styles.techIconWrapper}`}
+                  className={`${styles.techIconWrapper} tooltip`}
                   aria-label={tech}
                   // aria-label={tech}
                 >

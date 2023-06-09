@@ -1,0 +1,152 @@
+---
+title: 블로그 시작
+date: 2023-06-07
+draft: false
+tags:
+  - 블로그
+series: 나만의 블로그 만들기
+techs:
+  - Next.js
+---
+
+# 발단
+
+프로그래머 대부분의 가슴 한 켠에는 자기가 손수 뚝딱 만드는 로망이 있지 않을까? 나는 그런 사람이라서 웹 기술 배우는 순간부터 가슴 한 켠에 개인 블로그를 만들고 말겠다는 마음을 안고 살았었다.
+
+개발과는 무관하게 Dynalist, Notion과 같은 노트 서비스에 하루 일지같은 것들을 쓰고 있었는데, 아무래도 혼자만의 공간에 쓰는 글은 퇴고하는 일이 드물고, 다시금 꺼내어보는 일이 적게 됐다. 아무래도 남에게 드러나는 글을 쓴다는 것은 조금 다른 느낌인만큼 블로그는 언젠가 꼭 운영해보고자 하는 숙원 사업 중 하나였다.
+
+그래서 처음에는 Tistory, Velog와 같은 서비스형 블로그부터, Jekyll, Gatsby와 같은 툴들을 사용해 블로그를 직접 만들어볼까도 고민했었는데 뭔가 시원찮아서 고민만 한 지 어언 반 년, 마침 Next.js를 맛보고 나니 이걸로 블로그를 만들 수 있을 것 같다는 생각이 들길래 무작정 부딪쳐봤다.
+
+그런 짓은 하지 말았어야 했는데..
+
+# 얌전히 티스토리 쓸 걸 왜
+
+하다보니 문제가 생겼는데, 22년 10월에 Next.js 13 버전이 바뀌면서 대규모 변화에서 비롯된 것이었다.
+
+일단 먼저 Next.js 13으로 들어오면서 pages 라우팅 대신 app 라우팅으로 바뀌었다. Next.js로 만들어진 블로그의 코드들 대부분이 pages 라우팅을 기반으로 한 코드인데, **문제는 app 라우팅으로 코드 짜는 법만 막 배운 상태**. ~~망했어요~~ 그래서 pages 라우팅을 기반으로 한 코드를 보고 좀 헷갈렸다. 하지만 이건 그렇게까지 문제가 되지는 않았다.
+
+진짜 문제는 서버로 요청이 들어왔을 때 가장 먼저 실행되는 `_app`, 그리고 그 다음으로 실행되는 `_document` 파일이 `layout` 파일로 통합됨에 따라 예전 버전의 코드들을 현재 버전으로 적용하는데 무지하게 애를 많이 먹었다.
+
+예를 들어 유저의 다크모드 상태를 편하게 관리할 수 있는 라이브러리인 `next/themes`는 이전 버전 `_app` 파일에 다음과 같이 감싸기만 하면 되었다.
+
+```tsx:_app.tsx
+import { ThemeProvider, DefaultTheme } from "styled-components";
+
+const theme: DefaultTheme = {
+  colors: {
+    primary: "#111",
+    secondary: "#0070f3",
+  },
+};
+
+return(
+  <ThemeProvider theme={theme}>
+    <GlobalStyle />
+    <Component {...pageProps} />
+  </ThemeProvider>
+)
+```
+
+근데 이걸 최신 버전인 `layout`에서 적용하려면 Providers.tsx를 만들어서 그걸 `use client` 선언으로 클라이언트 컴포넌트로 만들고 그걸 layout으로 import해서 처리해야 하는데, 이렇게 하니까 간헐적으로 hydration 관련 에러가 났다.
+
+```tsx:layout.tsx
+import * as React from 'react'
+
+import { Providers } from './providers'
+import './globals.css'
+
+export default function RootLayout({
+  children
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html>
+      <head>
+      </head>
+
+      <body>
+        <Providers>
+          {children}
+        </Providers>
+      </body>
+    </html>
+  )
+}
+```
+
+```tsx:Provider.tsx
+'use client'
+
+import { ThemeProvider } from 'next-themes'
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <ThemeProvider>
+      {children}
+    </ThemeProvider>
+  )
+}
+```
+
+아무래도 layout에서의 클라이언트 컴포넌트 사용에 뭐가 문제가 있는 것 같아 보이는데, 임시 방편으로 `suppressHydrationWarning={true}` 해결책을 썼지만 이 역시도 불안해 그냥 다크모드를 쿠키로 관리하는 정책으로 노선을 바꿨다.
+
+이런 일들이 너무 많다보니 리액트를 공부할 때보다 다른 의미로 더 힘들었던 것 같다. 에러가 튀어나와도 조금이나마 지식이 있어 천천히 보다보면 어떻게든 해결할 수 있을 것 같을 때에는 덜 막막한데, 에러가 튀어나와 냅다 뚜드려패는데도 내가 뭘 모르는 지를 모르니까 아주 죽을 맛이었다.
+
+거기에 타입스크립트도 이론만 잠깐 배워보고 실제로 써보지 않았는데 이번 기회에 써먹으려고 하다보니 타입 정의부터 애를 많이 먹었다. 타입을 별도로 관리한다던가 하는 식으로 코드를 깔끔하게 짜놔야 하는데, 지금은 그냥 여기저기 덕지덕지 붙어있는 상태.
+
+그리고 예전 프로젝트에서 디자인 툴로 직접 한 번 뭔가 다뤄보고 싶은 마음에 피그마도 어떻게 배워서 한 번 써먹어봤는데, 이걸 또 반응형에 맞게 디자인하고, UX를 고려해서 이런저런 수정을 하다보니 이거 하는 데에도 꽤 애를 먹었다.
+
+보통 이런 블로그 프로젝트 진행할 때 `Tailwind`를 많이 쓰던데, 이와중에 그거까지 쓰기에는 머리가 터질 것 같아서 이번에는 next.js에서 기본적으로 제공해주는 global.css와 page.module.css를 활용해 짜봤다. 나름 이번에는 이거저거 해본다고 CSS 변수도 써보고 가상 선택자, 가상 요소도 적극 활용해보았다.
+
+여튼 이렇게 기본적인 조작법만 아는 것들을 갖고 프로젝트를 진행하는 상태였다보니, 모르는 부분들을 전부 다 이해하고 넘어가기에는 두어달은 걸릴 것 같았음. 그래서 구현하는 데 필요한 최소한의 이해만 하면서 구현하고 정리를 하는 데 힘썼다. 그러다보니 코드에서 스파게티 맛이 가득한데... 이건 천천히 정리해보도록 해야겠다.
+
+# 초안
+
+## 사이트맵
+
+- **홈(/)**: 간단한 자기 소개, 최근 글/프로젝트 게시
+- **프로젝트(/project)**: 메인/서브 프로젝트 게시
+  - 프로젝트 페이지 상세(/project/프로젝트명): 프로젝트 상세 서술
+- **포스트(/post)**: 각종 포스트 게시, 검색 기능 존재
+  - 포스트 페이지 상세(/post/포스트명)
+- **소개(/about)**: 온갖 시각효과들을 총동원해서 어필해보기
+
+## 마크다운에 들어갈 것
+
+- 프로젝트 페이지
+
+  - 프로젝트명(title) [필수]
+  - 프로젝트 시작 날짜(startDate) [옵션]
+  - 프로젝트 종료 날짜(endDate) [옵션]
+  - 초안(draft): 옵션이 true일 경우 글 리스트에서 보여주지 않음. [옵션]
+  - 기술들(techs): 어떤 기술을 사용했는지 나타내주는 정보 [옵션]
+
+- 포스트 페이지
+  - 게시글 제목(title) [필수]
+  - 게시일(date) [필수]
+  - 초안(draft): 옵션이 true일 경우 글 리스트에서 보여주지 않음. [옵션]
+  - 시리즈(series): 특정 시리즈에 속해있으면 같은 시리즈에 속한 글을 볼 때 같이 묶여서 나오게 됨. [옵션]
+  - 태그(tags): 기술 스택을 제외한 각종 키워드들 [옵션]
+  - 기술(techs): 게시글 내용에 관련된 기술 [옵션]
+
+# 사용한 기술
+
+- Next.js
+- Typescript
+- Javascript
+- Contentlayer
+- CSS
+- Figma
+
+# 참고한 사이트들
+
+- **[Bepyan](https://bepyan.github.io/snippets) 아주 많이 도움됨 👍👍**
+- **[Miryang Jung](https://miryang.dev/) 역시나 아주 많이 도움됨 👍👍**
+- [Davis Gitonga](https://davisgitonga.dev/)
+- [Sandro Maglione](https://www.sandromaglione.com/)
+- [Time Gambit](https://www.timegambit.com/blog/js/this)
+- [Pedro Duarte](https://ped.ro/writing)
+- [Delba](https://delba.dev/)
+- [Emma Campbell](https://www.emmacampbell.dev/blog/my-first-remicade-infusion)
+- [안그라픽스](https://ag.co.kr/)

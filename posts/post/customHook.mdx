@@ -1,0 +1,106 @@
+---
+title: (작성 중) 커스텀훅을 한 번 만들어보자
+date: 2023-06-10
+---
+
+## 드디어 커스텀훅 한 번 써먹어보나
+
+커스텀훅은 많이 들어봤지만 어떻게 활용해야 할 지 감이 안 잡혀서 그냥 그런 존재가 있구나 정도만 생각하고 말았다.
+근데 이번에 활용해볼 기회가 생김
+
+스크롤 하면 네비바 보더 생기는 움짤
+
+```tsx title="Navbar.tsx"
+'use client'
+
+export default function Navbar() {
+  const [isScrolled, setIsScrolled] = useState<boolean>();
+
+  useEffect(() => {
+    function trackYOffset() {
+      const currentYOffset = window.scrollY;
+      if (currentYOffset > 50) {
+        // 0이 아닐때
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    }
+
+    trackYOffset();
+
+    window.addEventListener('scroll', trackYOffset);
+
+    return () => {
+      window.removeEventListener('scroll', trackYOffset);
+    };
+  }, []);
+
+  return (
+    <>
+      <header>
+        <nav className={`${isScrolled ? 'header-border' : ''}`}>
+    // 생략
+  )
+}
+
+```
+
+이런 식으로 해놓은 상태였다.
+근데 이럴 일이 하나 더 생겼으니.. 모바일 너비에서 보이는 위로 가기 버튼이 Navbar 동작 방식과 유사하게 가야 하는 것.
+50px보다 더 밑으로 내려가야 저런 버튼이 보이는 게 뭔가 맥락상 잘 맞고 하니 저걸 끌어다가 써보기로 했다.
+
+```tsx title="src/hooks/useScrollTop.tsx" {3, 25}
+import { useEffect, useState } from 'react';
+
+export const useScrollTop = () => {
+  const [isScrolled, setIsScrolled] = useState<boolean>();
+
+  useEffect(() => {
+    function trackYOffset() {
+      const currentYOffset = window.scrollY;
+      if (currentYOffset > 50) {
+        // 0이 아닐때
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    }
+
+    trackYOffset();
+
+    window.addEventListener('scroll', trackYOffset);
+    return () => {
+      window.removeEventListener('scroll', trackYOffset);
+    };
+  }, []);
+
+  return isScrolled;
+};
+```
+
+useState 부분과 useEffect 부분을 같이 가져왔고 이걸 함수로 묶었다.
+그리고 isScrolled를 return했다.
+
+이제 원래 Navbar를 커스텀훅의 리턴값을 받아서 쓰도록 하자.
+
+```tsx title="Navbar.tsx" {1, 4}
+import { useScrollTop } from '@/hooks/useScrollTop';
+
+export default function Navbar() {
+  const isScrolled = useScrollTop();
+
+    return (
+      // 생략
+        <nav className={`${isScrolled ? 'header-border' : ''}`}>
+      // 생략
+    )
+}
+```
+
+useScrollTop을 실행하면서 어떤 구조인지는 몰라도 이벤트 리스너도 잘 작동하고 있다.
+이거 왜 이런건지 궁금하네.. 함수를 실행하는 건 최초 로드 한 번일때만 그런거 아닌가?
+
+어쨌든 일단 그건 그렇고 위로 가기 버튼에도 똑같이 적용해주자.
+
+## 그래서 커스텀 훅은 왜 쓰는건데?

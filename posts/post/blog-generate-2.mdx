@@ -1,0 +1,226 @@
+---
+title: Create Next App과 Contentlayer 세팅
+date: 2023-06-07
+draft: false
+tags:
+  - 블로그
+series: 블로그 한 접시
+techs:
+  - Next.js
+  - Contentlayer
+---
+
+## Create Next App 세팅
+
+리액트에 각종 귀찮은 설정을 하지 않고 알아서 프로젝트를 바로 시작하게 해주는 `Create React App(CRA)`이 있다면 Next.js 에서는 `Create Next App(CNA)`가 있다. 일단 Next.js 환경에서 돌릴거기 때문에 CNA를 설치해보자.
+Typescript, ESLint는 사용, tailwind는 사용하지 않았고, Next.js 13 버전부터 지원하는 App Router로 설정하고, src 폴더 아래에 app 폴더가 오도록 설정했다.
+
+이렇게 프로젝트를 세팅하고 나면 아래와 같은 폴더구조가 된다.
+
+```txt
+npx i create-next-app
+```
+
+```txt
+대충 폴더구조
+```
+
+## 마크다운 파일이 어떻게 HTML로 변환되는가?
+
+**나중에 이거 TMI JSX에 넣어서 쓸 것.**
+
+비단 마크다운뿐만 아니라 프로그래밍 언어의 처리 과정에는 이 과정이 다 포함됨.
+
+- 소스 코드 입력
+- 구문 분석
+- AST 생성
+- 의미 분석
+- 코드 최적화
+- 코드 생성
+
+먼저 ~~어디 내놓기 부끄러운 나의~~ 소스 코드를 입력하고 그걸 실행하라고 명령을 내림.**(소스 코드 입력)** 그러면 단순 문자열에 불과한 것들을 실행에 옮기기 전에 먼저 문법적으로 틀린게 없는지 체크함. 중괄호 닫는거 까먹고 실행해버리면 이 단계에서 발작하게 됨.**(구문 분석)** 그렇게 체크를 다 하고 나서 그 문자열을 AST라는 트리로 옮김. 단순 문자열을 이렇게 트리구조로 계층화 시키면 컴퓨터가 읽기 편하다고 좋아함.**(AST 생성)**
+
+이제 의미를 분석하는 단계로 감. 변수가 유효한지, string 타입에 쓸 수 있는 함수를 number 타입에서 쓴 건 아닌지와 같은 실질적인 의미 분석을 함.**(의미 분석)** 그리고 최적화함. 뭔지는 잘 모름.**(코드 최적화)** 최종적으로 기계어, 혹은 중간 언어로 코드를 생성함.**(코드 생성)**
+
+## 그럼 unified는 뭐고, rehype는 뭐고, remark는 뭔데
+
+일단 마크다운을 AST로 변환하는 과정을 거쳐야 하는데 그걸 해주는 게 unified임. 이렇게 마크다운을 AST로 바꾼 것을 mdast라고 함. 이 mdast 상태에 변환을 해주는 게 remark 플러그인임. remark 플러그인들의 작업이 끝나면 mdast는 html로 바로 변환될 수 있는 구조인 hast로 변환됨. 그렇게 변환된 hast를 갖고 여러 작업을 실행해 주는게 rehype 플러그인.
+
+(unified, remark, rehype를 이용한 전통적 방식의 마크다운 가공 방식 설명)
+
+- rehype는 rehypify의 준말, 즉 다시 hypertext로 만들다는 의미, Hypertext를 리터칭하는 느낌.
+- remark는 md에서 mdast로 변환된 것을 갖고 리터칭 하는 느낌이라 생각.
+- https://www.daleseo.com/unified-remark-rehype/
+
+```txt title="test0.mdx"
+---
+title: 테스트
+date: 2023-06-01
+---
+
+테스트
+```
+
+```json title="post__test0.mdx.json" caption="test" {1-3,7} /코드/
+{
+  "title": "테스트",
+  "date": "2023-06-01T00:00:00.000Z",
+  "body": {
+    "raw": "\r\n테스트\r\n",
+    "code": "난독화된 코드들이 여기에 있음"
+  },
+  "_id": "post/test0.mdx",
+  "_raw": {
+    "sourceFilePath": "post/test0.mdx",
+    "sourceFileName": "test0.mdx",
+    "sourceFileDir": "post",
+    "contentType": "mdx",
+    "flattenedPath": "post/test0"
+  },
+  "type": "Post",
+  "url": "post/test0",
+  "readTimeMinutes": 1,
+  "headings": []
+}
+```
+
+## Contentlayer를 사용해보자
+
+### 설치
+
+프로젝트 카테고리에 표시될 글은 `/posts/project`, 포스트 카테고리에 표시될 글은 `/posts/post` 폴더에 마크다운 형식으로 저장하려고 함 그렇게 마크다운 형식으로 저장된 파일은 라이브러리에 의해 HTML로 파싱되어 서버가 빌드됨에 따라 알아서 그 카테고리에 들어가기를 원하는 상황.
+
+그렇다면 마크다운을 분석해서 코드로 변환시켜주는 툴이 필요함. 마크다운의 프론트 마터와 내용, 그리고 MDX 확장자로 사용시 JSX까지 깔끔하게 파싱해주고, 나아가 각 내용들의 타입 정의도 잘 해주는 라이브러리인 [**Contentlayer**](https://www.contentlayer.dev/)를 사용했다. date-fns를 사용해도 되지만 day.js를 써보고 싶어서 이렇게 써봤다.
+
+```txt
+npm install contentlayer next-contentlayer dayjs
+```
+
+그리고 next.config.js와 tsconfig.json, 그리고 .gitignore를 다음과 같이 설정합니다.
+
+```js:next.config.js
+const { withContentlayer } = require('next-contentlayer');
+
+/** @type {import('next').NextConfig} */
+const nextConfig = { reactStrictMode: true, swcMinify: true };
+
+module.exports = withContentlayer(nextConfig);
+```
+
+```json:tsconfig.json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    //  ^^^^^^^^^^^ 추가
+    "paths": {
+      "contentlayer/generated": ["./.contentlayer/generated"]
+      // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 추가
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".contentlayer/generated"
+    // ^^^^^^^^^^^^^^^^^^^^^^ 추가
+  ]
+}
+```
+
+```txt:.gitignore
+#.gitignore
+
+#...
+
+#contentlayer
+.contentlayer
+```
+
+### Contentlayer의 스키마 설정
+
+글의 메타 정보를 제목, 날짜, 부제, 태그, 이런 식으로 설정한다 했을 때 마크다운의 구조는 이렇게 들어가게 된다.
+
+```txt
+---
+title: 제목
+date: 날짜
+description: 한 줄이나 두 줄 정도 되는 설명
+tags:
+  - 태그 1
+  - 태그 2
+---
+
+내용
+```
+
+여기서 `---` 사이에 있는 글의 정보를 `front-matter`라고 함. Contentlayer에서는 저 부분에 올 필드를 미리 contentlayer.config.ts에 지정해둬서 프론트 마터를 JSON 코드로 변환하게 됨.
+
+여기서 title과 date는 필수 정보, description과 tags는 선택 정보, 즉 없어도 상관없는 정보라고 가정하고 위의 내용을 파싱한다고 쳤을 때 contentlayer.config.ts에 들어가는 정보는 다음과 같다.
+
+```ts:contentlayer.config.ts
+import { defineDocumentType, makeSource } from '@contentlayer/source-files'
+
+export const Post = defineDocumentType(() => ({
+  name: 'Post',
+  filePathPattern: `**/*.md`,
+  fields: {
+    title: { type: 'string', required: true },
+    date: { type: 'date', required: true },
+    description: { type: 'string', required: false }, // 필수가 아니므로 required에 false
+    tags: { type: 'list', of: { type: 'string' }, required: false }, // 배열의 형태로 담기게 됨.
+  },
+  computedFields: {
+    url: { type: 'string', resolve: post => post._raw.flattenedPath},
+  }, // 마크다운을 json 객체로 변환되어 나오는 정보들 가운데 추가적인 데이터를 뽑아주기 위해 사용하는 필드.
+}))
+
+export default makeSource({ contentDirPath: 'posts', documentTypes: [Post] })
+```
+
+이렇게 contentlayer.config.ts를 설정하고, 서버가 돌아가는 상황에서(npm run dev를 한 상태) 마크다운 파일을 형식에 맞게 만들고 저장하면 Contentlayer가 알아서 파일을 인식하고 마크다운 파일을 JSON 파일로 변환시켜 주게 된다.
+
+변환된 JSON 파일은 .contentlayer/generated 폴더 아래에 위치해있다.
+
+```txt:first.md
+---
+title: 첫 게시글
+date: 2023-12-31
+tags:
+  - tag
+---
+첫 번째 게시글입니다.
+```
+
+```json
+{
+  "title": "첫 게시글",
+  "date": "2023-12-31T00:00:00.000Z",
+  "tags": ["tag"],
+  "body": {
+    "raw": "\r\n첫 번째 게시글입니다.\r\n",
+    "html": "<p>첫 번째 게시글입니다.</p>"
+  },
+  "_id": "post/test1.md",
+  "_raw": {
+    "sourceFilePath": "post/test1.md",
+    "sourceFileName": "test1.md",
+    "sourceFileDir": "post",
+    "contentType": "markdown",
+    "flattenedPath": "post/test1"
+  },
+  "type": "Post",
+  "url": "post/test1"
+}
+```
+
+그러면 아까 저 contentlayer.config.ts에서 computedFields에 들어간 부분이 이해가 갈 것이다. json으로 변환하는 과정에서 필수적으로 나오는 예약된 프로퍼티가 있는데 `_id`와 `_raw`. 이런 상태에서 Post.url을 입력하면 '/post/test1' 라는 텍스트가 리턴되게 됩니다. 이걸 이용해서 나중에 url로 사용할 예정입니다.
+
+**다시 설명**
+computedField는 resolve에 들어가있는 함수를 연산(?)한 결과값을 넣는 곳. 단순히 타입정의만 하는 게 아니라 \_id, \_raw라는 예약된 파일들을 통해서 원하는 자료로 가공하고 싶을 때 쓰는 것.
+
+가령 '/post/test1' URL로 들어갔을 때 /posts/post/test1.md를 보여주게 하고 싶은 것. 그럴 때 저 '/post/test1'를 변수로 바로 뺄 수 있으면 편함. 그걸 위해서 저걸 쓰는 거.
+
+## 실제로 써보자
+
+[^1]: JSX 문법을 사용할 수 있는 마크다운 파일

@@ -1,7 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './page.module.css';
+import { UpIcon } from '@/styles/svgIcons';
+import { scrollToTop } from '@/app/util';
+import { useScrollTop } from '@/hooks/useScrollTop';
 
 type heading = {
   level: number;
@@ -10,12 +13,13 @@ type heading = {
 };
 
 type AsideProps = {
-  headings: heading[];  
+  headings: heading[];
   params: { slug: string };
   title: string;
 };
 
 export default function Aside({ headings, params, title }: AsideProps) {
+  const isScrolled = useScrollTop();
   const marginReturn = (level: number) => {
     switch (level) {
       case 1:
@@ -43,7 +47,7 @@ export default function Aside({ headings, params, title }: AsideProps) {
       if (!anchor) return;
 
       for (let i = 0; i < anchor.length; i++) {
-        anchorLocation.push(anchor[i].getBoundingClientRect().top + window.pageYOffset);
+        anchorLocation.push(anchor[i].getBoundingClientRect().top + window.scrollY);
       }
 
       anchorPositions = anchorLocation;
@@ -60,14 +64,14 @@ export default function Aside({ headings, params, title }: AsideProps) {
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentYOffset = window.pageYOffset;
+      const currentYOffset = window.scrollY;
       const boldMapping = headings.map(() => false);
 
       for (let i = 0; i < headings.length; i++) {
         if (
-          anchorPositions[i] - 20 - currentYOffset < 0 &&
+          anchorPositions[i] - 95 - currentYOffset < 0 &&
           (i + 1 >= anchorPositions.length ||
-            anchorPositions[i + 1] - 20 - currentYOffset >= 0)
+            anchorPositions[i + 1] - 95 - currentYOffset >= 0)
         ) {
           boldMapping[i] = true;
           break;
@@ -86,22 +90,35 @@ export default function Aside({ headings, params, title }: AsideProps) {
   }, [headings]);
 
   return (
-    <aside className={styles.tocWrapper}>
-      <div className={styles.toc}>
-        <h3>{title}</h3>
-        {headings.map((heading: heading, idx) => {
-          return (
-            <div key={`#${heading.slug}`} style={marginReturn(heading.level)}>
-              <a
-                href={`${params.slug}#${heading.slug}`}
-                style={headingBold[idx] ? { fontWeight: 700 } : undefined}
-              >
-                {heading.text}
-              </a>
-            </div>
-          );
-        })}
-      </div>
-    </aside>
+    <>
+      <aside className={styles.tocWrapper}>
+        <div className={styles.toc}>
+          <h3>{title}</h3>
+          {headings.map((heading: heading, idx) => {
+            return (
+              <div key={`#${heading.slug}`} style={marginReturn(heading.level)}>
+                <a
+                  href={`${params.slug}#${heading.slug}`}
+                  className={headingBold[idx] ? styles.tocBold : undefined}
+                >
+                  {heading.text}
+                </a>
+              </div>
+            );
+          })}
+          <div className={styles.tocFooter}>
+            <button className="round-btn" onClick={scrollToTop}>
+              <UpIcon width="16px" />
+            </button>
+          </div>
+        </div>
+      </aside>
+      <button
+        className={`round-btn fixed-btn ${isScrolled ? 'visible' : 'invisible'}`}
+        onClick={scrollToTop}
+      >
+        <UpIcon width={16} />
+      </button>
+    </>
   );
 }

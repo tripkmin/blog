@@ -12,3 +12,10 @@ export const selectedTheme = () => {
     return 'dark';
   }
 };
+
+export const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+};

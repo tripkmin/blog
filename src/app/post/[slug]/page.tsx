@@ -1,13 +1,10 @@
-'use client';
-
 import { fontMono } from '@/app/layout';
 import { allPosts } from 'contentlayer/generated';
 import dayjs from 'dayjs';
 import { getMDXComponent } from 'next-contentlayer/hooks';
 import Aside from './Aside';
-import Image from 'next/image';
 import styles from './page.module.css';
-import { filterNonDraft } from '@/app/util';
+import { filterNonDraft, scrollToTop } from '@/app/util';
 import Link from 'next/link';
 import {
   CalendarIcon,
@@ -16,40 +13,56 @@ import {
   RightAngleIcon,
   TagIcon,
   TimerIcon,
+  UndoIcon,
+  UpIcon,
 } from '@/styles/svgIcons';
+import Pre from '@/components/mdx-components/Pre';
+// import { Pre } from '@/component/Pre';
 
-export const generateStaticParams = async () =>
-  allPosts.map(post => ({ slug: post._raw.flattenedPath }));
+// export async function generateStaticParams() {
+//   return allPosts.map(post => ({
+//     slug: post._raw.flattenedPath,
+//   }));
+// }
 
-export const generateMetadata = ({ params }: { params: { slug: string } }) => {
-  const post = allPosts.find(post => post._raw.flattenedPath === `post/${params.slug}`);
-  if (!post) throw new Error(`Post not found for slug: ${params.slug}`);
-  return { title: post.title };
-};
+export default function PostLayout({ params }: { params: { slug: string } }) {
+  // if (!params) {
+  //   // 체크하기
+  //   return <div>Loading</div>;
+  // }
 
-// 원래 async 있었는데 오류나서 뺌. 나중에 알아볼 것.
-const PostLayout = ({ params }: { params: { slug: string } }) => {
-  if (!params) {
-    // 체크하기
-    return <div>Loading</div>;
-  }
+  // 현재 포스트 정보를 가져오기 위한 코드들
   const post = allPosts.find(post => post._raw.flattenedPath === `post/${params.slug}`);
   // 여기서 post가 undefined일 경우 Content가 비정의되는 문제 해결
   if (!post) throw new Error(`Post not found for slug: ${params.slug}`);
-  const Content = getMDXComponent(post.body.code);
+  const MDXLayout = getMDXComponent(post.body.code);
+
+  const formattedDate = dayjs(post.date).format('YYYY. MM. DD');
+
+  /*
+  - contentlayer.config.ts 설정대로 mdx 파일이 변환됨.
+  - 클릭한 글과 매치되는 파일을 찾아 그걸 post에 할당함. 
+  - 할당된 post 정보는 .contentlayer 폴더 안에 존재. 
+  - post.body.code 부분을 추출해서 Content에 할당. 이 부분은 완전한 JS 코드로 이뤄짐
+  - 이걸 컴포넌트로 넣으면 서버에서는 js 코드를 html로 변환함.
+  */
+
+  // 이전 포스트, 다음 포스트를 위한 코드들
   const posts = filterNonDraft(allPosts).sort((a, b) => dayjs(b.date).diff(a.date));
   const currentPostIdx = posts.findIndex(el => el.title === post.title);
   const prevPost = posts[currentPostIdx - 1];
   const nextPost = posts[currentPostIdx + 1];
 
-  const formattedDate = dayjs(post.date).format('YYYY. MM. DD');
+  const components = {
+    pre: Pre,
+  };
+
   return (
     <>
       <section className="sub-header post-title">
         <h1>{post.title}</h1>
         <div className={styles.infoBox}>
           <CalendarIcon width={12} style={{ marginRight: '5px' }} />
-          {/* 우측 마진 5픽셀 못 넣었음 */}
           <span className="small-info">
             <time dateTime={post.date}>{formattedDate}</time>
           </span>
@@ -59,7 +72,7 @@ const PostLayout = ({ params }: { params: { slug: string } }) => {
       </section>
       <article className="main-section content-area">
         <Aside headings={post.headings} params={params} title={post.title} />
-        <Content className={fontMono.className} />
+        <MDXLayout className={fontMono.className} components={components} />
       </article>
       <section>
         <div className={styles.articleFooter}>
@@ -71,11 +84,16 @@ const PostLayout = ({ params }: { params: { slug: string } }) => {
               </span>
             ))}
           </div>
-          {/* <div>
-            <Link href="/post" className={styles.backToList}>
-              <ListIcon width={16} />
+          <div>
+            <Link
+              href="/post"
+              aria-label="목록으로"
+              className={`${styles.backToList} tooltip`}
+            >
+              <UndoIcon width={16} />
+              {/* <ListIcon width={16} /> */}
             </Link>
-          </div> */}
+          </div>
         </div>
         <div
           className={styles.pagination}
@@ -106,6 +124,4 @@ const PostLayout = ({ params }: { params: { slug: string } }) => {
       </section>
     </>
   );
-};
-
-export default PostLayout;
+}
