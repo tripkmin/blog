@@ -19,16 +19,16 @@
 
 .postWrapper {
   display: flex;
+  justify-content: space-between;
   width: 100%;
-  border: 1px solid var(--sub-border-light-color);
+  /* min-height: 115px; */
+  border: 1px solid var(--sub-border-color);
   border-radius: 10px;
   padding: 15px 20px;
   transition: all 0.2s;
   background-color: #ffffff10;
-}
-
-body[data-theme='dark'] .postWrapper {
-  border: 1px solid var(--sub-border-dark-color);
+  gap: 10px;
+  overflow: hidden;
 }
 
 .postWrapper:hover {
@@ -43,8 +43,16 @@ body[data-theme='dark'] .postWrapper {
 
 .postLeft {
   flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
+.postLeft h4 {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
 .postRight {
   display: flex;
   gap: 5px;
@@ -78,26 +86,22 @@ body[data-theme='dark'] .postWrapper {
   width: 40px;
   height: 40px;
   padding: 2px;
-  background-color: var(--light-background-color);
+  background-color: var(--background-color);
   border-radius: 5px;
-  border: 1px solid var(--main-border-light-color);
-  background-color: var(--light-background-color);
-  /* overflow: hidden; */
+  border: 1px solid var(--main-border-color);
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   transition: all 0.2s;
-  position: relative;
+  /* position: relative; */
 }
 
 body[data-theme='dark'] .techIconWrapper {
-  border: 1px solid var(--main-border-dark-color);
   background-color: #777;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
 }
-
+/* 
 .techIconWrapper::before {
   position: absolute;
   top: -25px;
-  /* left: -80px; */
   background-color: #777;
   border-radius: 5px;
   color: #fff;
@@ -121,7 +125,7 @@ body[data-theme='dark'] .techIconWrapper {
 .techIconWrapper:hover::before {
   opacity: 1;
   transition: all 0.2s;
-}
+} */
 
 .techBadge {
   background-color: var(--tech-color);

@@ -8,6 +8,7 @@
   margin-left: 20px;
   margin-bottom: 20px;
 }
+
 /* 
 .toc {
   --sb-track-color: #eee;
@@ -39,15 +40,31 @@
   margin-right: 12px;
 }
 
-.toc a {
+.tocWrapper .toc a {
   text-decoration: none;
-  text-wrap: balance;
+  transition: all 0.2s;
+  word-break: keep-all;
+}
+
+.tocWrapper .toc .tocBold {
+  font-weight: var(--bold-font-weight);
+  position: relative;
+  color: var(--text-bold-color);
 }
 
 .toc h3 {
   line-height: 120%;
   margin-bottom: 10px;
+  word-break: keep-all;
   text-wrap: balance;
+}
+
+.tocFooter {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  padding: 10px 0;
+  border-top: 1px dashed var(--main-border-color);
 }
 
 .articleFooter {
@@ -68,6 +85,9 @@
 }
 
 .backToList {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 10px;
   /* color: #777; */
   transition: background-color 0.2s;
@@ -102,6 +122,17 @@
   background-color: var(--button-hover-color);
 }
 
+.prevPagination > div,
+.nextpagination > div {
+  width: 85%;
+}
+.prevPagination h3,
+.nextpagination h3 {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .prevPagination {
   justify-content: flex-start;
 }
@@ -120,6 +151,7 @@
   align-items: center;
   margin-bottom: 30px;
 }
+
 @media screen and (max-width: 1300px) {
   .toc {
     width: 200px;
