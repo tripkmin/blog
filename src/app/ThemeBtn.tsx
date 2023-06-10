@@ -11,12 +11,19 @@ export default function ThemeBtn() {
   };
 
   return (
-    <button className={styles.themeToggleBtn} onClick={themeHandler}>
-      {theme === 'dark' ? (
-        <DarkmodeIcon width={16} height={16} color="#74b3e9" />
-      ) : (
+    <>
+      <button
+        className={`${styles.themeToggleBtn} ${styles.lightmodeBtn}`}
+        onClick={themeHandler}
+      >
         <LightmodeIcon width={16} height={16} color="#fc941d" />
-      )}
-    </button>
+      </button>
+      <button
+        className={`${styles.themeToggleBtn} ${styles.darkmodeBtn}`}
+        onClick={themeHandler}
+      >
+        <DarkmodeIcon width={16} height={16} color="#74b3e9" />
+      </button>
+    </>
   );
 }

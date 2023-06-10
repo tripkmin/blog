@@ -124,6 +124,14 @@ html[data-theme='dark'] .blurOn {
   transition: all 0.3s;
 }
 
+html[data-theme='light'] .darkmodeBtn {
+  display: none;
+}
+
+html[data-theme='dark'] .lightmodeBtn {
+  display: none;
+}
+
 @media screen and (max-width: 700px) {
   .menuIconWrapper {
     display: flex;
