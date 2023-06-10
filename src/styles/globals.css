@@ -8,8 +8,9 @@ html {
   scroll-behavior: smooth;
 }
 
-body {
+html {
   --background-color: #fff;
+  --background-neutral-color: #aaa;
   --text-color: #444;
   --text-bold-color: #222;
   /* --text-color: #222;
@@ -42,8 +43,9 @@ body {
   --tech-color: #ffd5003d; */
 }
 
-body[data-theme='dark'] {
+html[data-theme='dark'] {
   --background-color: #222;
+  --background-neutral-color: #777;
   --text-color: #ccc;
   --text-bold-color: #fff;
   /* --text-color: #eee;
@@ -183,37 +185,25 @@ table {
   border-spacing: 0;
 }
 
-/* 스크롤바 관련 */
-
 html {
   overflow: -moz-scrollbars-vertical;
   overflow-y: scroll;
   overflow-x: hidden;
-}
-
-body {
   transition: background-color 0.3s;
-  position: relative;
-}
-
-body,
-body[data-theme='light'] {
   background-color: var(--background-color);
 }
 
-body[data-theme='dark'] {
+html[data-theme='dark'] {
   background-color: var(--background-color);
 }
 
 body {
   --sb-track-color: #eee;
   --sb-thumb-color: #787878;
-  /* --sb-track-color: #eee;
-  --sb-thumb-color: #787878; */
   --sb-size: 13px;
 
   scrollbar-color: var(--background-color) var(--sb-track-color);
-  /* scrollbar-color: var(--sb-thumb-color) var(--sb-track-color); */
+  position: relative;
 }
 
 body::-webkit-scrollbar {
@@ -235,61 +225,6 @@ body::-webkit-scrollbar-thumb {
   overflow: hidden;
 }
 
-/* 폰트 안티앨리어싱 관련 */
-p,
-span,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-small,
-textarea,
-li,
-ul,
-button {
-  /* transform: rotate(0.04deg); */
-}
-
-/* p,
-p[data-theme='light'],
-span,
-span[data-theme='light'],
-h1,
-h1[data-theme='light'],
-h2,
-h2[data-theme='light'],
-h3,
-h3[data-theme='light'],
-h4,
-h4[data-theme='light'],
-h5,
-h5[data-theme='light'],
-h6,
-h6[data-theme='light'],
-div,
-div[data-theme='light'],
-button,
-button[data-theme='light'],
-small,
-small[data-theme='light'],
-textarea,
-textarea[data-theme='light'],
-input,
-input[data-theme='light'],
-select,
-select[data-theme='light'],
-option,
-option[data-theme='light'],
-li,
-li[data-theme='light'],
-ul,
-ul[data-theme='light'] {
-  color: var(--light-text-color);
-  line-height: 160%;
-  letter-spacing: -0.75px;
-} */
 p,
 span,
 h1,
@@ -337,27 +272,6 @@ ul,
 a {
   color: var(--text-color);
 }
-
-/* body[data-theme='dark'] p,
-body[data-theme='dark'] span,
-body[data-theme='dark'] h1,
-body[data-theme='dark'] h2,
-body[data-theme='dark'] h3,
-body[data-theme='dark'] h4,
-body[data-theme='dark'] h5,
-body[data-theme='dark'] h6,
-body[data-theme='dark'] div,
-body[data-theme='dark'] button,
-body[data-theme='dark'] small,
-body[data-theme='dark'] textarea,
-body[data-theme='dark'] input,
-body[data-theme='dark'] select,
-body[data-theme='dark'] option,
-body[data-theme='dark'] li,
-body[data-theme='dark'] ul,
-body[data-theme='dark'] a {
-  color: var(--dark-text-color);
-} */
 
 button {
   font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,

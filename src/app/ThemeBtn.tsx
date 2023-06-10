@@ -1,28 +1,13 @@
 'use client';
 
 import styles from './page.module.css';
-import { Dispatch, SetStateAction, useEffect } from 'react';
 import { DarkmodeIcon, LightmodeIcon } from '@/styles/svgIcons';
+import { useTheme } from 'next-themes';
 
-export default function ThemeBtn({
-  theme,
-  setTheme,
-}: {
-  theme: string | undefined;
-  setTheme: Dispatch<SetStateAction<string | undefined>>;
-}) {
-  // const cookieTheme = `; ${document.cookie}`?.split(`; theme=`).pop()?.split(';')[0];
-
+export default function ThemeBtn() {
+  const { theme, setTheme } = useTheme();
   const themeHandler = () => {
-    if (theme === 'dark') {
-      setTheme('light');
-      document.cookie = `theme=light; Max-Age=${3600 * 24 * 400}; Path=/`;
-      document.body.dataset.theme = 'light';
-    } else {
-      setTheme('dark');
-      document.cookie = `theme=dark; Max-Age=${3600 * 24 * 400}; Path=/`;
-      document.body.dataset.theme = 'dark';
-    }
+    theme == 'dark' ? setTheme('light') : setTheme('dark');
   };
 
   return (

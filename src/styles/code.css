@@ -107,27 +107,3 @@ code[data-line-numbers] .line::before {
   width: 15px;
   color: rgb(255 255 255 / 0.2);
 }
-
-/* pre[data-theme='dark'] {
-  color-scheme: dark;
-} */
-
-body[data-theme='light'] pre[data-theme='dark'] {
-  display: none;
-}
-
-body[data-theme='dark'] pre[data-theme='light'] {
-  display: none;
-}
-/* 
-@keyframes blink {
-  20% {
-    background-color: #ff7070;
-  }
-} */
-/* 
-.anchor:after {
-  content: '#';
-  margin-left: -32px;
-  position: absolute;
-} */

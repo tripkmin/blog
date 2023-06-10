@@ -13,36 +13,14 @@ export default function Navbar() {
   const upperPath = pathname.split('/')[1];
 
   const [theme, setTheme] = useState<string>();
-  // const [isScrolled, setIsScrolled] = useState<boolean>();
   const [isMobileWidth, setIsMobileWidth] = useState<boolean>();
   const [isOpen, setIsOpen] = useState<boolean>();
   const isScrolled = useScrollTop();
-
-  // useEffect(() => {
-  //   function trackYOffset() {
-  //     const currentYOffset = window.scrollY;
-  //     if (currentYOffset > 50) {
-  //       // 0이 아닐때
-  //       setIsScrolled(true);
-  //     } else {
-  //       setIsScrolled(false);
-  //     }
-  //   }
-
-  //   trackYOffset();
-
-  //   window.addEventListener('scroll', trackYOffset);
-
-  //   return () => {
-  //     window.removeEventListener('scroll', trackYOffset);
-  //   };
-  // }, []);
 
   useEffect(() => {
     function trackWidth() {
       const currentWidth = window.innerWidth;
       if (currentWidth < 700) {
-        // 0이 아닐때
         setIsMobileWidth(true);
       } else {
         setIsMobileWidth(false);
@@ -122,7 +100,7 @@ export default function Navbar() {
             </h3>
             <div className={styles.verticalBorder}></div>
 
-            <ThemeBtn theme={theme} setTheme={setTheme} />
+            <ThemeBtn />
           </div>
         </nav>
       </header>
@@ -165,7 +143,7 @@ export default function Navbar() {
               </h3>
             </div>
             <div className={styles.mobileBtnWrapper}>
-              <ThemeBtn theme={theme} setTheme={setTheme} />
+              <ThemeBtn />
             </div>
           </div>
         </>

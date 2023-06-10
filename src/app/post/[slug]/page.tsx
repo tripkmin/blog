@@ -1,23 +1,20 @@
-import { fontMono } from '@/app/layout';
+import { fontMono } from '@/libs/fonts';
 import { allPosts } from 'contentlayer/generated';
 import dayjs from 'dayjs';
 import { getMDXComponent } from 'next-contentlayer/hooks';
 import Aside from './Aside';
 import styles from './page.module.css';
-import { filterNonDraft, scrollToTop } from '@/app/util';
+import { filterNonDraft } from '@/app/util';
 import Link from 'next/link';
 import {
   CalendarIcon,
   LeftAngleIcon,
-  ListIcon,
   RightAngleIcon,
   TagIcon,
   TimerIcon,
   UndoIcon,
-  UpIcon,
 } from '@/styles/svgIcons';
 import Pre from '@/components/mdx-components/Pre';
-// import { Pre } from '@/component/Pre';
 
 export async function generateStaticParams() {
   return allPosts.map(post => ({
@@ -36,16 +33,7 @@ export default function PostLayout({ params }: { params: { slug: string } }) {
   // 여기서 post가 undefined일 경우 Content가 비정의되는 문제 해결
   if (!post) throw new Error(`Post not found for slug: ${params.slug}`);
   const MDXLayout = getMDXComponent(post.body.code);
-
   const formattedDate = dayjs(post.date).format('YYYY. MM. DD');
-
-  /*
-  - contentlayer.config.ts 설정대로 mdx 파일이 변환됨.
-  - 클릭한 글과 매치되는 파일을 찾아 그걸 post에 할당함. 
-  - 할당된 post 정보는 .contentlayer 폴더 안에 존재. 
-  - post.body.code 부분을 추출해서 Content에 할당. 이 부분은 완전한 JS 코드로 이뤄짐
-  - 이걸 컴포넌트로 넣으면 서버에서는 js 코드를 html로 변환함.
-  */
 
   // 이전 포스트, 다음 포스트를 위한 코드들
   const posts = filterNonDraft(allPosts).sort((a, b) => dayjs(b.date).diff(a.date));
@@ -53,6 +41,7 @@ export default function PostLayout({ params }: { params: { slug: string } }) {
   const prevPost = posts[currentPostIdx - 1];
   const nextPost = posts[currentPostIdx + 1];
 
+  // MDX 컴포넌트에서 추가로 건드려 줄 부분
   const components = {
     pre: Pre,
   };

@@ -91,41 +91,12 @@
   border: 1px solid var(--main-border-color);
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   transition: all 0.2s;
-  /* position: relative; */
 }
 
-body[data-theme='dark'] .techIconWrapper {
+html[data-theme='dark'] .techIconWrapper {
   background-color: #777;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
 }
-/* 
-.techIconWrapper::before {
-  position: absolute;
-  top: -25px;
-  background-color: #777;
-  border-radius: 5px;
-  color: #fff;
-  content: attr(aria-label);
-  padding: 0 7px;
-  text-transform: none;
-  transition: all 0.2s ease;
-  max-width: 100px;
-  line-height: 160%;
-  font-size: 12px;
-  opacity: 0;
-  pointer-events: none;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  word-break: break-all;
-  text-overflow: ellipsis;
-}
-
-.techIconWrapper:focus::before,
-.techIconWrapper:hover::before {
-  opacity: 1;
-  transition: all 0.2s;
-} */
 
 .techBadge {
   background-color: var(--tech-color);
@@ -140,7 +111,6 @@ body[data-theme='dark'] .techIconWrapper {
 
 .infoBox > div {
   display: flex;
-  /* align-items: center; */
 }
 
 .infoBox > div > span {
