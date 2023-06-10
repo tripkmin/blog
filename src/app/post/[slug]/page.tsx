@@ -19,11 +19,11 @@ import {
 import Pre from '@/components/mdx-components/Pre';
 // import { Pre } from '@/component/Pre';
 
-// export async function generateStaticParams() {
-//   return allPosts.map(post => ({
-//     slug: post._raw.flattenedPath,
-//   }));
-// }
+export async function generateStaticParams() {
+  return allPosts.map(post => ({
+    slug: post._raw.flattenedPath,
+  }));
+}
 
 export default function PostLayout({ params }: { params: { slug: string } }) {
   // if (!params) {
