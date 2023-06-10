@@ -13,10 +13,6 @@
   margin-right: 3px;
 }
 
-.postList > div:not(:first-child) {
-  margin-top: 10px;
-}
-
 .postWrapper {
   display: flex;
   justify-content: space-between;
@@ -25,21 +21,19 @@
   border: 1px solid var(--sub-border-color);
   border-radius: 10px;
   padding: 15px 20px;
-  transition: all 0.2s;
-  background-color: #ffffff10;
+  transition: all 0.3s;
+  background-color: var(--post-card-color);
   gap: 10px;
   overflow: hidden;
+  margin-bottom: 10px;
 }
 
 .postWrapper:hover {
-  /* transform: scale(1.01); */
   box-shadow: 0px 15px 39px -20px rgba(0, 0, 0, 0.09);
   -webkit-box-shadow: 0px 15px 39px -20px rgba(0, 0, 0, 0.09);
   -moz-box-shadow: 0px 15px 39px -20px rgba(0, 0, 0, 0.09);
+  background-color: var(--post-card-hover-color);
 }
-/* .postWrapper > div:nth-child(n + 2) {
-  margin-top: 5px;
-} */
 
 .postLeft {
   flex-grow: 1;

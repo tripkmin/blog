@@ -1,5 +1,6 @@
 'use client';
 
+import { fontMono } from '@/libs/fonts';
 import { CheckIcon, ClipboardIcon } from '@/styles/svgIcons';
 import { ReactNode, useRef, useState } from 'react';
 
@@ -39,7 +40,7 @@ export default function Pre({ children }: Props) {
       ref={textInput}
       onMouseEnter={onEnter}
       onMouseLeave={onExit}
-      className="pre-wrapper"
+      className={`pre-wrapper ${fontMono.className}`}
     >
       {hovered && (
         <button
