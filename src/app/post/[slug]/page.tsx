@@ -18,15 +18,14 @@ import Pre from '@/components/mdx-components/Pre';
 
 export async function generateStaticParams() {
   return allPosts.map(post => ({
-    slug: post._raw.flattenedPath,
+    slug: post._raw.flattenedPath.split('/')[1],
   }));
 }
 
 export default function PostLayout({ params }: { params: { slug: string } }) {
-  // if (!params) {
-  //   // 체크하기
-  //   return <div>Loading</div>;
-  // }
+  if (!params) {
+    return; // 체크할 것
+  }
 
   // 현재 포스트 정보를 가져오기 위한 코드들
   const post = allPosts.find(post => post._raw.flattenedPath === `post/${params.slug}`);
