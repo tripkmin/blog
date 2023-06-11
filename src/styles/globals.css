@@ -525,7 +525,7 @@ details summary {
   line-height: 260%;
 }
 
-.content-area a[not] {
+.content-area a {
   text-decoration: underline wavy;
   text-decoration-color: #ff707e86;
   transition: text-decoration-color 0.2s;
@@ -571,7 +571,7 @@ details summary {
 .content-area blockquote {
   border-left: 3px solid var(--sub-border-color);
   /* border-left: 3px solid #eee; */
-  padding-left: 8px;
+  padding-left: 17px;
 }
 
 .content-area img {
