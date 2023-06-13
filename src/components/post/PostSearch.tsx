@@ -4,7 +4,7 @@ import { Post } from 'contentlayer/generated';
 import { useState } from 'react';
 import styles from './page.module.css';
 import Image from 'next/image';
-import { filterNonDraft } from '../util';
+import { filterNonDraft } from '../../utils/util';
 
 type NavigationProps = {
   allPosts: Post[];
@@ -16,7 +16,7 @@ type NavigationProps = {
   setSelectedTechs: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-export default function Aside({
+export default function PostSearch({
   allPosts,
   selectedSeries,
   setSelectedSeries,

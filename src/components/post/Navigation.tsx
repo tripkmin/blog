@@ -1,7 +1,7 @@
 'use client';
 import { Post } from 'contentlayer/generated';
 import { useState } from 'react';
-import { filterNonDraft } from '../util';
+import { filterNonDraft } from '../../utils/util';
 
 type NavigationProps = {
   allPosts: Post[];

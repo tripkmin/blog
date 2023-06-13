@@ -5,3 +5,11 @@
 .invisible {
   visibility: hidden;
 }
+
+.controllable {
+  pointer-events: all;
+}
+
+.uncontrollable {
+  pointer-events: none;
+}

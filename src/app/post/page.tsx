@@ -3,11 +3,13 @@
 // import { motion } from 'framer-motion';
 // import { useState } from 'react';
 // import Aside from './Aside';
-import styles from './page.module.css';
+import styles from '@/styles/Post.module.css';
 import dayjs from 'dayjs';
 import { allPosts, Post } from 'contentlayer/generated';
-import { filterNonDraft } from '../util';
-import PostCard from './PostCard';
+import { filterNonDraft } from '../../utils/util';
+import PostCard from '@/components/post/PostCard';
+import SubHeader from '@/components/common/SubHeader';
+import { phrases } from 'data/phrases';
 
 export default function Post() {
   // const [selectedSeries, setSelectedSeries] = useState('');
@@ -30,10 +32,10 @@ export default function Post() {
 
   return (
     <>
-      <section className="sub-header">
-        <h1>포스트</h1>
-        <p>개발과 관련된 여러가지 주제들을 다루고 있습니다.</p>
-      </section>
+      <SubHeader
+        title={phrases.Post.title}
+        description={phrases.Post.description}
+      ></SubHeader>
       <section>
         <div className="main-section">
           {/* <Aside
