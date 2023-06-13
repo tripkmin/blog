@@ -27,6 +27,12 @@ html {
   --series-color: #ff7c3e52;
   --tag-color: #9d9d9d47;
   --tech-color: #ffd5003d;
+
+  --transition-1: 0.1s;
+  --transition-2: 0.2s;
+  --transition-3: 0.3s;
+  --transition-4: 0.4s;
+  --transition-5: 0.5s;
   /* 
   --light-background-color: #fff;
   --dark-background-color: #222;
@@ -166,13 +172,11 @@ nav,
 section {
   display: block;
 }
+
 body {
   line-height: 1;
 }
-/* ol,
-ul {
-  list-style: none;
-} */
+
 blockquote,
 q {
   quotes: none;
@@ -240,6 +244,7 @@ h6,
 div,
 button,
 small,
+strong,
 textarea,
 input,
 select,
@@ -267,6 +272,7 @@ h6,
 div,
 button,
 small,
+strong,
 textarea,
 input,
 select,
@@ -366,6 +372,14 @@ h4 {
 
 h5 {
   font-size: 14px;
+}
+
+strong {
+  font-weight: 700;
+}
+
+small {
+  font-size: 12px;
 }
 
 main,

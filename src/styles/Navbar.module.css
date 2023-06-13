@@ -24,7 +24,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  transition: transform 0.2s, background-color 0.3s;
+  transition: transform var(--transition-2), background-color var(--transition-3);
 }
 
 .menuOpen {
@@ -38,7 +38,7 @@
   backdrop-filter: blur(5px);
   z-index: -1000;
   opacity: 0;
-  transition: all 0.2s;
+  transition: all var(--transition-2);
 }
 
 .blurOn {
@@ -68,18 +68,13 @@ html[data-theme='dark'] .blurOn {
 .categoryWrapper a:not(.currentPage),
 .mobileCategoryWrapper a:not(.currentPage) {
   color: var(--text-color);
-  transition: color 0.1s;
+  transition: color var(--transition-1);
 }
 
 .categoryWrapper a:not(.currentPage):hover,
 .mobileCategoryWrapper a:not(.currentPage):hover {
   color: var(--text-bold-color);
 }
-
-/* .mobileBtnWrapper {
-  border-top: 1px solid var(--sub-border-light-color);
-  margin-top: 80px;
-} */
 
 .mobileBtnWrapper::before {
   content: '';
@@ -89,7 +84,7 @@ html[data-theme='dark'] .blurOn {
   margin-top: 80px;
   margin-bottom: 10px;
   background-color: var(--sub-border-color);
-  transition: background-color 0.2s;
+  transition: background-color var(--transition-2);
 }
 
 .verticalBorder {
@@ -97,31 +92,6 @@ html[data-theme='dark'] .blurOn {
   width: 1px;
   height: 15px;
   margin-right: 20px;
-}
-
-.themeToggleBtn,
-.footerBtn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 0;
-  background-color: transparent;
-  border-radius: 50%;
-  padding: 10px;
-  transition: background-color 0.2s, transform 0.1s;
-  cursor: pointer;
-}
-
-.themeToggleBtn:hover,
-.footerBtn:hover {
-  background-color: var(--button-hover-color);
-  animation-duration: 0.4s;
-}
-
-.themeToggleBtn:active,
-.footerBtn:active {
-  transform: scale(0.85);
-  transition: all 0.3s;
 }
 
 html[data-theme='light'] .darkmodeBtn {

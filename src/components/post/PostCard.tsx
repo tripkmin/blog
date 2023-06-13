@@ -1,18 +1,11 @@
 import { Post } from 'contentlayer/generated';
-import dayjs from 'dayjs';
-import Image from 'next/image';
 import Link from 'next/link';
-import styles from './page.module.css';
+import styles from '@/styles/Post.module.css';
 import { CalendarIcon, TimerIcon } from '@/styles/svgIcons';
+import { formattedDate } from '@/utils/util';
+import TechLogo from './TechLogo';
 
 export default function PostCard(post: Post) {
-  const formattedDate = dayjs(post.date).format('YYYY-MM-DD');
-  const renamed = (name: string) =>
-    name
-      .toLowerCase()
-      .replace(/ /g, '')
-      .replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ]/g, '');
-
   return (
     <Link href={post.url}>
       <div className={styles.postWrapper}>
@@ -32,16 +25,12 @@ export default function PostCard(post: Post) {
               : undefined}
           </div>
           <div>
-            <h4>
-              {/* <Link href={post.url}> */}
-              {post.title}
-              {/* </Link> */}
-            </h4>
+            <h4>{post.title}</h4>
           </div>
           <div className={styles.infoBox}>
             <div>
               <CalendarIcon width={10} style={{ marginRight: '5px' }} />
-              <span className="small-info">{formattedDate}</span>
+              <span className="small-info">{formattedDate(post.date)}</span>
               <TimerIcon width={10} style={{ marginRight: '5px' }} />
               <span className="small-info">{post.readTimeMinutes}분</span>
             </div>
@@ -55,15 +44,8 @@ export default function PostCard(post: Post) {
                     key={idx}
                     className={`${styles.techIconWrapper} tooltip`}
                     aria-label={tech}
-                    // aria-label={tech}
                   >
-                    <Image
-                      src={`/techIcon/${renamed(tech)}.svg`}
-                      alt={tech}
-                      width={30}
-                      height={30}
-                      className="no-drag"
-                    />
+                    <TechLogo tech={tech} />
                   </div>
                 );
               })
@@ -72,10 +54,4 @@ export default function PostCard(post: Post) {
       </div>
     </Link>
   );
-}
-
-{
-  /* <span key={idx} className={`${styles.techBadge} ${styles.badge}`}>
-{tech}
-</span> */
 }

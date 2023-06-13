@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import styles from './page.module.css';
+import styles from '@/styles/Navbar.module.css';
 import { usePathname } from 'next/navigation';
 import { MouseEvent, useEffect, useState } from 'react';
 import { LogoIcon, MenuIcon } from '@/styles/svgIcons';

@@ -1,9 +1,9 @@
 import '@/styles/globals.css';
 import '@/styles/utils.css';
 import '@/styles/code.css';
-import Navbar from './Navbar';
-import Footer from './Footer';
-import GrainFilter from './GrainFilter';
+import Navbar from '@/components/common/header/Navbar';
+import Footer from '@/components/common/Footer';
+import GrainFilter from '@/components/common/GrainFilter';
 import { Pretendard } from '@/libs/fonts';
 import ThemeProvider from '@/components/ThemeProvider';
 

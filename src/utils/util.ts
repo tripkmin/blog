@@ -1,4 +1,5 @@
 import { Post } from 'contentlayer/generated';
+import dayjs from 'dayjs';
 
 export const filterNonDraft = (allPost: Post[]) => {
   return allPost.filter(el => !el.draft);
@@ -19,3 +20,13 @@ export const scrollToTop = () => {
     behavior: 'smooth',
   });
 };
+
+export const formattedDate = (date: string) => {
+  return dayjs(date).format('YYYY. MM. DD');
+};
+
+export const renamed = (name: string) =>
+  name
+    .toLowerCase()
+    .replace(/ /g, '')
+    .replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ]/g, '');
