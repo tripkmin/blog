@@ -18,18 +18,13 @@ export default function Pre({ children }: Props) {
     setHovered(true);
   };
 
-  const onExit = () => {
-    setHovered(false);
-    setCopied(false);
-  };
-
   const onCopy = () => {
     setCopied(true);
     navigator.clipboard.writeText(textInput.current?.textContent as string);
 
     const timeoutId = setTimeout(() => {
       setCopied(false);
-    }, 2000);
+    }, 1000);
 
     clearTimeout(timeoutRef.current as NodeJS.Timeout);
     timeoutRef.current = timeoutId;
@@ -39,23 +34,22 @@ export default function Pre({ children }: Props) {
     <div
       ref={textInput}
       onMouseEnter={onEnter}
-      onMouseLeave={onExit}
       className={`pre-wrapper ${fontMono.className}`}
     >
-      {hovered && (
-        <button
-          aria-label="Copy code"
-          type="button"
-          className="round-btn copy-btn"
-          onClick={onCopy}
-        >
-          {copied ? (
-            <CheckIcon width="16px" style={{ color: '#ccc' }} />
-          ) : (
-            <ClipboardIcon width="16px" style={{ color: '#ccc' }} />
-          )}
-        </button>
-      )}
+      {/* {hovered && ( */}
+      <button
+        aria-label="Copy code"
+        type="button"
+        className="round-btn copy-btn"
+        onClick={onCopy}
+      >
+        {copied ? (
+          <CheckIcon width="16px" style={{ color: '#ccc' }} />
+        ) : (
+          <ClipboardIcon width="16px" style={{ color: '#ccc' }} />
+        )}
+      </button>
+      {/* )} */}
       <pre>{children}</pre>
     </div>
   );

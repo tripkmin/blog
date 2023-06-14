@@ -54,7 +54,7 @@ html {
 html[data-theme='dark'] {
   --background-color: #222;
   --background-neutral-color: #777;
-  --text-color: #ccc;
+  --text-color: #ddd;
   --text-bold-color: #fff;
   /* --text-color: #eee;
   --text-light-color: #bbb; */
@@ -539,22 +539,31 @@ details summary {
   line-height: 260%;
 }
 
+.content-area h1 .anchor,
+.content-area h2 .anchor,
+.content-area h3 .anchor,
+.content-area h4 .anchor,
+.content-area h5 .anchor,
+.content-area h6 .anchor {
+  color: var(--text-bold-color);
+}
 .content-area a {
   text-decoration: underline wavy;
   text-decoration-color: #ff707e86;
-  transition: text-decoration-color 0.2s;
+  transition: all var(--transition-2);
   color: var(--text-color);
 }
 
 .content-area a:hover {
   text-decoration-color: #ff707f;
+  color: var(--text-bold-color);
 }
 
 .content-area code:not(pre code) {
   padding: 2px 8px;
   background-color: var(--sub-border-color);
   border-radius: 5px;
-  transition: background-color 0.2s;
+  transition: background-color var(--transition-2);
 }
 
 /* 나중에 필요할 때 써먹어보자 */

@@ -7,6 +7,15 @@ body {
   position: relative;
 }
 
+.pre-wrapper:hover > button {
+  opacity: 1;
+  transition: all var(--transition-2);
+}
+
+.pre-wrapper > button {
+  opacity: 0;
+}
+
 .copy-btn {
   position: absolute;
   bottom: 15px;
