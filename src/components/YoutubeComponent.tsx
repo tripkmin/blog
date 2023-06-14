@@ -1,7 +1,9 @@
+'use client';
+
 import Youtube, { YouTubeProps } from 'react-youtube';
 import style from '@/styles/libs.module.css';
 
-export default function YoutubeComponents(props: YouTubeProps) {
+export default function YoutubeComponent(props: YouTubeProps) {
   return (
     <Youtube
       key={props.videoId}
@@ -14,7 +16,6 @@ export default function YoutubeComponents(props: YouTubeProps) {
           modestbranding: 1,
         },
       }}
-      // onEnd={props.onEnd}
     ></Youtube>
   );
 }

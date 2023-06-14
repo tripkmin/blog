@@ -8,6 +8,7 @@ import TocAside from '@/components/post/TocAside';
 import PostHeader from '@/components/post/PostHeader';
 import PostFooter from '@/components/post/PostFooter';
 import TopBtn from '@/components/common/TopBtn';
+import YoutubeComponent from '@/components/YoutubeComponent';
 
 // post/[slug]로부터 뽑아져오는 props.params를 정의하기 위한 인터페이스
 interface Props {
@@ -38,6 +39,7 @@ export default function PostLayout({ params }: Props) {
   // MDX 컴포넌트에서 추가로 건드려 줄 부분
   const components = {
     pre: Pre,
+    YoutubeComponent: YoutubeComponent,
   };
 
   return (
