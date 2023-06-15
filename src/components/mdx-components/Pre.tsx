@@ -4,19 +4,14 @@ import { fontMono } from '@/libs/fonts';
 import { CheckIcon, ClipboardIcon } from '@/styles/svgIcons';
 import { ReactNode, useRef, useState } from 'react';
 
-interface Props {
+interface PreProps extends React.HTMLProps<HTMLPreElement> {
   children?: ReactNode;
 }
 
-export default function Pre({ children }: Props) {
+export default function Pre({ children, ...props }: PreProps) {
   const textInput = useRef<HTMLDivElement>(null);
   const timeoutRef: { current: NodeJS.Timeout | null } = useRef(null);
-  const [hovered, setHovered] = useState(false);
   const [copied, setCopied] = useState(false);
-
-  const onEnter = () => {
-    setHovered(true);
-  };
 
   const onCopy = () => {
     setCopied(true);
@@ -31,12 +26,7 @@ export default function Pre({ children }: Props) {
   };
 
   return (
-    <div
-      ref={textInput}
-      onMouseEnter={onEnter}
-      className={`pre-wrapper ${fontMono.className}`}
-    >
-      {/* {hovered && ( */}
+    <div ref={textInput} className={`pre-wrapper ${fontMono.className}`}>
       <button
         aria-label="Copy code"
         type="button"
@@ -49,8 +39,7 @@ export default function Pre({ children }: Props) {
           <ClipboardIcon width="16px" style={{ color: '#ccc' }} />
         )}
       </button>
-      {/* )} */}
-      <pre>{children}</pre>
+      <pre {...props}>{children}</pre>
     </div>
   );
 }
