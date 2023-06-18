@@ -9,14 +9,28 @@ type LogoIconParams = {
   style?: CSSProperties;
 };
 
+export const ExpandMoreIcon = ({ color, width, height, style }: LogoIconParams) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height={height}
+      width={width}
+      style={style}
+      fill="currentColor"
+      viewBox="0 -960 960 960"
+    >
+      <path d="M480-345 240-585l43-43 197 198 197-197 43 43-240 239Z" />
+    </svg>
+  );
+};
 export const LogoIcon = ({ color, width, height, style }: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
       height={height}
+      width={width}
       style={style}
-      fill="none"
+      fill="currentColor"
       viewBox="0 0 105 38"
     >
       <path

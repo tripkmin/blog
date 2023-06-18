@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import styles from '@/styles/PostDetail.module.css';
-import { UpIcon } from '@/styles/svgIcons';
-import { marginReturn, scrollToTop } from '@/utils/util';
+import { useEffect, useRef, useState } from 'react';
+import { ExpandMoreIcon } from '@/styles/svgIcons';
+import { marginReturn } from '@/utils/util';
 
 interface heading {
   level: number;
@@ -17,7 +17,8 @@ interface AsideProps {
   title: string;
 }
 
-export default function TocAside({ headings, params, title }: AsideProps) {
+export default function PostSubHeader({ headings, params, title }: AsideProps) {
+  const [isTocOpen, setIsTocOpen] = useState(false);
   let anchorPositions: number[] = [];
   const [headingBold, setHeadingBold] = useState<boolean[]>([]);
 
@@ -78,30 +79,73 @@ export default function TocAside({ headings, params, title }: AsideProps) {
     };
   }, [headings]);
 
+  const activeHeadingIndex = headingBold.findIndex(el => el);
+  const activeHeadingText =
+    activeHeadingIndex !== -1 ? headings[activeHeadingIndex].text : '목차';
+
+  const clickRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: Event) => {
+      if (clickRef.current && !clickRef.current.contains(event.target as Node)) {
+        setIsTocOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    const onHashChanged = () => {
+      setIsTocOpen(false);
+    };
+
+    window.addEventListener('hashchange', onHashChanged);
+
+    return () => {
+      window.removeEventListener('hashchange', onHashChanged);
+    };
+  }, []);
+
   return (
-    <>
-      <aside className={styles.tocWrapper}>
-        <div className={styles.toc}>
-          <h3>{title}</h3>
-          {headings.map((heading: heading, idx) => {
-            return (
-              <div key={`#${heading.slug}`} style={marginReturn(heading.level)}>
-                <a
-                  href={`${params.slug}#${heading.slug}`}
-                  className={headingBold[idx] ? styles.tocBold : undefined}
-                >
-                  {heading.text}
-                </a>
-              </div>
-            );
-          })}
-          <div className={styles.tocFooter}>
-            <button className="round-btn" onClick={scrollToTop}>
-              <UpIcon width="16px" />
-            </button>
-          </div>
-        </div>
-      </aside>
-    </>
+    <div className={styles.subHeaderWrapper} ref={clickRef}>
+      <div className={styles.subHeader}>
+        <strong>{activeHeadingText}</strong>
+        <button
+          type="button"
+          className="plain-btn"
+          onClick={() => {
+            setIsTocOpen(prev => !prev);
+          }}
+        >
+          <ExpandMoreIcon width={24} />
+        </button>
+      </div>
+      <div
+        className={
+          isTocOpen
+            ? `${styles.tocShow} ${styles.subHeaderToc}`
+            : `${styles.tocHidden} ${styles.subHeaderToc}`
+        }
+        // ref={clickRef}
+      >
+        {headings.map((heading: heading, idx) => {
+          return (
+            <div key={`#${heading.slug}`} style={marginReturn(heading.level)}>
+              <a
+                href={`${params.slug}#${heading.slug}`}
+                className={headingBold[idx] ? styles.tocBold : undefined}
+              >
+                {heading.text}
+              </a>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }

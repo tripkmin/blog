@@ -10,6 +10,7 @@ html {
 
 html {
   --background-color: #fff;
+  --background-color-transparent: #ffffffcc;
   --background-neutral-color: #aaa;
   --text-color: #444;
   --text-bold-color: #222;
@@ -53,6 +54,7 @@ html {
 
 html[data-theme='dark'] {
   --background-color: #222;
+  --background-color-transparent: #222222cc;
   --background-neutral-color: #777;
   --text-color: #ddd;
   --text-bold-color: #fff;
@@ -318,6 +320,21 @@ button {
   pointer-events: none;
   visibility: hidden;
 }
+
+.plain-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+/* 
+.plain-btn:active {
+  transform: scale(0.85);
+} */
 /* 이거 체크해보기
 
 .antialiased {
@@ -599,6 +616,7 @@ details summary {
 
 .content-area img {
   width: 100%;
+  border-radius: 10px;
 }
 
 .content-area ul {
@@ -732,18 +750,9 @@ details summary {
   footer {
     padding: 0 25px;
   }
-
-  /* .content-area p,
-  .content-area th,
-  .content-area td,
-  .content-area tr,
-  .content-area li,
-  .content-area ul {
-    font-size: 14px;
-  } */
 }
 
-@media screen and (max-width: 1130px) {
+@media screen and (max-width: 1250px) {
   .fixed-btn {
     visibility: visible;
     pointer-events: all;
