@@ -10,7 +10,7 @@ import PostFooter from '@/components/post/PostFooter';
 import TopBtn from '@/components/common/TopBtn';
 import YoutubeComponent from '@/components/YoutubeComponent';
 import CustomLink from '@/components/mdx-components/CustomLink';
-import PostSubHeader from '@/components/post/PostSubHeader';
+import TocMobileTop from '@/components/post/TocMobileTop';
 
 // post/[slug]로부터 뽑아져오는 props.params를 정의하기 위한 인터페이스
 interface Props {
@@ -48,7 +48,7 @@ export default function PostLayout({ params }: Props) {
   return (
     <>
       <PostHeader post={currentPost} />
-      <PostSubHeader
+      <TocMobileTop
         headings={currentPost.headings}
         params={params}
         title={currentPost.title}

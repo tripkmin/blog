@@ -1,21 +1,15 @@
 /****************************** Reset CSS 시작 ******************************/
 
-/* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
-*/
 html {
   scroll-behavior: smooth;
 }
 
 html {
   --background-color: #fff;
-  --background-color-transparent: #ffffffcc;
+  --background-color-transparent: #e1e1e1cc;
   --background-neutral-color: #aaa;
   --text-color: #444;
   --text-bold-color: #222;
-  /* --text-color: #222;
-  --text-light-color: #666; */
   --post-card-color: #fff;
   --post-card-hover-color: #eee;
   --main-border-color: #ccc;
@@ -34,32 +28,14 @@ html {
   --transition-3: 0.3s;
   --transition-4: 0.4s;
   --transition-5: 0.5s;
-  /* 
-  --light-background-color: #fff;
-  --dark-background-color: #222;
-
-  --light-text-color: #222;
-  --dark-text-color: #fff;
-
-  --main-border-light-color: #ccc;
-  --sub-border-light-color: #eee;
-  --main-border-dark-color: #777;
-  --sub-border-dark-color: #444;
-
-  --button-hover-color: #aaaaaa44;
-  --series-color: #ff7c3e52;
-  --tag-color: #9d9d9d47;
-  --tech-color: #ffd5003d; */
 }
 
 html[data-theme='dark'] {
   --background-color: #222;
-  --background-color-transparent: #222222cc;
+  --background-color-transparent: #333333cc;
   --background-neutral-color: #777;
   --text-color: #ddd;
   --text-bold-color: #fff;
-  /* --text-color: #eee;
-  --text-light-color: #bbb; */
   --post-card-color: #2e2e2e;
   --post-card-hover-color: #333;
   --main-border-color: #777;
@@ -259,7 +235,6 @@ td,
 th {
   line-height: 180%;
   letter-spacing: -0.75px;
-  /* color: var(--text-color); */
 }
 
 p,
@@ -331,17 +306,11 @@ button {
   transition: all 0.2s;
   cursor: pointer;
 }
-/* 
+
 .plain-btn:active {
   transform: scale(0.85);
-} */
-/* 이거 체크해보기
-
-.antialiased {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
-*/
+
 a {
   text-decoration: none;
   /* color: initial; */
@@ -549,11 +518,11 @@ details summary {
 }
 
 .content-area h2 {
-  line-height: 220%;
+  line-height: 200%;
 }
 
 .content-area h3 {
-  line-height: 260%;
+  line-height: 220%;
 }
 
 .content-area h1 .anchor,
@@ -649,11 +618,6 @@ details summary {
   font-weight: var(--bold-font-weight);
 }
 
-/* .content-area .anchor {
-  position: absolute;
-}
-.content-area .anchor:after {
-} */
 ::-moz-selection {
   background: #b1d8ff;
   color: #222;
@@ -702,27 +666,6 @@ details summary {
 
 /****************************** Reset CSS 끝 ******************************/
 
-/****************************** 기본 스타일 ******************************/
-
-/* .rehype-code-title {
-  padding: 5px 15px 3px 15px;
-  font-family: 'JetBrains Mono', Menlo, Monaco, Consolas, 'Andale Mono', 'Ubuntu Mono',
-    'Courier New', monospace;
-  background-color: #333;
-  color: white;
-  z-index: 0;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  font-size: 12px;
-} */
-
-/* .rehype-code-title + pre[class*='language-'],
-.rehype-code-title + code[class*='language-'] {
-  margin-top: 0;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-} */
-
 @keyframes trembling {
   20% {
     transform: rotateX('-25deg');
@@ -757,25 +700,12 @@ details summary {
     visibility: visible;
     pointer-events: all;
   }
+  .content-area h1,
+  .content-area h2,
+  .content-area h3,
+  .content-area h4,
+  .content-area h5,
+  .content-area h6 {
+    scroll-margin-top: 90px;
+  }
 }
-/* 
-@media screen and (max-width: 768px) {
-  .pagination {
-    flex-wrap: wrap;
-  }
-  .pagination > a {
-    width: 100%;
-  }
-  .pagination > a:nth-child(1) {
-    margin-bottom: 5px;
-  }
-  .pagination h3 {
-    font-size: 16px;
-  }
-  .tagElement {
-    font-size: 14px;
-  }
-  .content-area p {
-    font-size: 14px;
-  }
-} */
