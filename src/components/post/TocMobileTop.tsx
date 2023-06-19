@@ -17,8 +17,9 @@ interface AsideProps {
   title: string;
 }
 
-export default function PostSubHeader({ headings, params, title }: AsideProps) {
+export default function TocMobileTop({ headings, params, title }: AsideProps) {
   const [isTocOpen, setIsTocOpen] = useState(false);
+
   let anchorPositions: number[] = [];
   const [headingBold, setHeadingBold] = useState<boolean[]>([]);
 
@@ -57,11 +58,11 @@ export default function PostSubHeader({ headings, params, title }: AsideProps) {
 
       for (let i = 0; i < headings.length; i++) {
         if (
-          anchorPositions[i] - 95 - currentYOffset < 0 &&
+          anchorPositions[i] - 105 - currentYOffset < 0 &&
           // 만약 i + 1가 anchorPosition의 총 길이보다 길다면 || 뒤의 평가를 수행하지 않고 바로 true를 뱉어냄.
           // 만약 i + 1가 anchorPosition의 총 길이보다 짧다면 || 뒤의 평가를 수행함.
           (i + 1 >= anchorPositions.length ||
-            anchorPositions[i + 1] - 95 - currentYOffset >= 0)
+            anchorPositions[i + 1] - 105 - currentYOffset >= 0)
         ) {
           boldMapping[i] = true;
           break;
@@ -99,18 +100,6 @@ export default function PostSubHeader({ headings, params, title }: AsideProps) {
     };
   }, []);
 
-  useEffect(() => {
-    const onHashChanged = () => {
-      setIsTocOpen(false);
-    };
-
-    window.addEventListener('hashchange', onHashChanged);
-
-    return () => {
-      window.removeEventListener('hashchange', onHashChanged);
-    };
-  }, []);
-
   return (
     <div className={styles.subHeaderWrapper} ref={clickRef}>
       <div className={styles.subHeader}>
@@ -122,7 +111,10 @@ export default function PostSubHeader({ headings, params, title }: AsideProps) {
             setIsTocOpen(prev => !prev);
           }}
         >
-          <ExpandMoreIcon width={24} />
+          <ExpandMoreIcon
+            width={24}
+            style={isTocOpen ? { transform: 'rotate(180deg)' } : undefined}
+          />
         </button>
       </div>
       <div
