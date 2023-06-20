@@ -11,6 +11,10 @@ export const phrases = {
     title: '포스트',
     description: '개발과 관련된 여러가지 주제들을 다루고 있습니다.',
   },
+  Log: {
+    title: '로그',
+    description: '개인적인 신변잡기들',
+  },
   About: {
     title: '소개',
     description: 'Let me introduce myself',

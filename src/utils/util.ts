@@ -1,7 +1,9 @@
-import { Post } from 'contentlayer/generated';
+import { Post, Project, Log } from 'contentlayer/generated';
 import dayjs from 'dayjs';
 
-export const filterNonDraft = (allPost: Post[]) => {
+type Draftable = Post | Project | Log;
+
+export const filterNonDraft = (allPost: Draftable[]) => {
   return allPost.filter(el => !el.draft);
 };
 
