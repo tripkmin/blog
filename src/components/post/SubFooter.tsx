@@ -1,16 +1,26 @@
 import styles from '@/styles/PostDetail.module.css';
 import { LeftAngleIcon, RightAngleIcon, TagIcon, UndoIcon } from '@/styles/svgIcons';
 import { filterNonDraft } from '@/utils/util';
-import { Post, allPosts } from 'contentlayer/generated';
+import { Log, Post, allLogs, allPosts } from 'contentlayer/generated';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 
-export default function PostFooter({ currentPost }: { currentPost: Post }) {
+interface SubFooterType {
+  postdata: Post | Log;
+}
+
+export default function SubFooter({ postdata }: SubFooterType) {
+  const dataMap = {
+    Log: allLogs,
+    Post: allPosts,
+  };
+
   // 이전 포스트, 다음 포스트를 위한 코드들
-  const displayPosts = filterNonDraft(allPosts).sort((a, b) =>
+  const displayPosts = filterNonDraft(dataMap[postdata.type]).sort((a, b) =>
     dayjs(b.date).diff(a.date)
   );
-  const currentPostIdx = displayPosts.findIndex(el => el.title === currentPost.title);
+
+  const currentPostIdx = displayPosts.findIndex(el => el.title === postdata.title);
   const prevPost = displayPosts[currentPostIdx - 1];
   const nextPost = displayPosts[currentPostIdx + 1];
 
@@ -19,7 +29,7 @@ export default function PostFooter({ currentPost }: { currentPost: Post }) {
       <div className={styles.articleFooter}>
         <div className={styles.tagList}>
           <TagIcon width={16} style={{ marginRight: '7px' }} />
-          {currentPost.tags?.map((el, idx) => (
+          {postdata.tags?.map((el, idx) => (
             <span className={styles.tagElement} key={idx}>
               {el}
             </span>
@@ -27,12 +37,11 @@ export default function PostFooter({ currentPost }: { currentPost: Post }) {
         </div>
         <div>
           <Link
-            href="/post"
+            href={`/${postdata.type.toLowerCase()}`}
             aria-label="목록으로"
             className={`${styles.backToList} tooltip`}
           >
             <UndoIcon width={16} />
-            {/* <ListIcon width={16} /> */}
           </Link>
         </div>
       </div>

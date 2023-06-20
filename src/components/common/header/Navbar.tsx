@@ -91,6 +91,11 @@ export default function Navbar() {
               </Link>
             </h3>
             <h3>
+              <Link href="/log" className={upperPath === 'log' ? styles.currentPage : ''}>
+                로그
+              </Link>
+            </h3>
+            <h3>
               <Link
                 href="/about"
                 className={upperPath === 'about' ? styles.currentPage : ''}
@@ -131,6 +136,14 @@ export default function Navbar() {
                   className={upperPath === 'post' ? styles.currentPage : ''}
                 >
                   포스트
+                </Link>
+              </h3>
+              <h3>
+                <Link
+                  href="/log"
+                  className={upperPath === 'log' ? styles.currentPage : ''}
+                >
+                  로그
                 </Link>
               </h3>
               <h3>
