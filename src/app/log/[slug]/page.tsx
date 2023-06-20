@@ -1,4 +1,4 @@
-import { allPosts } from 'contentlayer/generated';
+import { allLogs } from 'contentlayer/generated';
 import { getMDXComponent } from 'next-contentlayer/hooks';
 import { fontMono } from '@/libs/fonts';
 import styles from '@/styles/PostDetail.module.css';
@@ -21,22 +21,20 @@ interface Props {
 
 // slug에 올 수 있는 모든 경로들을 계산해서 배열 형태로 만들어 빌드 시 미리 정적 생성하도록 만듬
 export const generateStaticParams = async () => {
-  return allPosts.map(post => ({
-    slug: post._raw.flattenedPath.split('/')[1],
+  return allLogs.map(log => ({
+    slug: log._raw.flattenedPath.split('/')[1],
   }));
 };
 
 export default function PostLayout({ params }: Props) {
-  const currentPost = allPosts.find(
-    post => post._raw.flattenedPath === `post/${params.slug}`
-  );
-  if (!currentPost) {
+  const currentLog = allLogs.find(log => log._raw.flattenedPath === `log/${params.slug}`);
+  if (!currentLog) {
     notFound();
   }
 
   // 여기서 post가 undefined일 경우 Content가 비정의되는 문제 해결
   // if (!post) throw new Error(`Post not found for slug: ${params.slug}`);
-  const MDXLayout = getMDXComponent(currentPost.body.code);
+  const MDXLayout = getMDXComponent(currentLog.body.code);
 
   // MDX 컴포넌트에서 추가로 건드려 줄 부분
   const components = {
@@ -47,21 +45,21 @@ export default function PostLayout({ params }: Props) {
 
   return (
     <>
-      <SubHeader postdata={currentPost} />
+      <SubHeader postdata={currentLog} />
       <TocMobileTop
-        headings={currentPost.headings}
+        headings={currentLog.headings}
         params={params}
-        title={currentPost.title}
+        title={currentLog.title}
       />
       <article className="main-section content-area">
         <TocAside
-          headings={currentPost.headings}
+          headings={currentLog.headings}
           params={params}
-          title={currentPost.title}
+          title={currentLog.title}
         />
         <MDXLayout className={fontMono.className} components={components} />
       </article>
-      <SubFooter postdata={currentPost} />
+      <SubFooter postdata={currentLog} />
       <section className={styles.comment}>
         <span>댓글</span>
       </section>

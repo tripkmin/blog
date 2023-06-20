@@ -17,7 +17,9 @@ export default function Post() {
   // const [selectedTechs, setSelectedTechs] = useState<string[]>([]);
 
   // draft가 false인 것들만 가져오고 최신순으로 정렬.
-  const posts = filterNonDraft(allPosts).sort((a, b) => dayjs(b.date).diff(a.date));
+  const posts = (filterNonDraft(allPosts) as Post[]).sort((a, b) =>
+    dayjs(b.date).diff(a.date)
+  );
 
   // const filteredPosts = posts.filter(
   //   post =>
