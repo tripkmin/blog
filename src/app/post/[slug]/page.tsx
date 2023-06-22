@@ -11,6 +11,7 @@ import TopBtn from '@/components/common/TopBtn';
 import YoutubeComponent from '@/components/YoutubeComponent';
 import CustomLink from '@/components/mdx-components/CustomLink';
 import TocMobileTop from '@/components/post/TocMobileTop';
+import HoverLink from '@/components/mdx-components/HoverLink';
 
 // post/[slug]로부터 뽑아져오는 props.params를 정의하기 위한 인터페이스
 interface Props {
@@ -22,18 +23,18 @@ interface Props {
 // slug에 올 수 있는 모든 경로들을 계산해서 배열 형태로 만들어 빌드 시 미리 정적 생성하도록 만듬
 export const generateStaticParams = async () => {
   return allPosts.map(post => ({
-    slug: post._raw.flattenedPath.split('/')[1],
+    slug: post._raw.sourceFileName.split('.mdx')[0],
   }));
 };
 
 export default function PostLayout({ params }: Props) {
   const currentPost = allPosts.find(
-    post => post._raw.flattenedPath === `post/${params.slug}`
+    post => post._raw.sourceFileName.split('.mdx')[0] === params.slug
   );
+
   if (!currentPost) {
     notFound();
   }
-
   // 여기서 post가 undefined일 경우 Content가 비정의되는 문제 해결
   // if (!post) throw new Error(`Post not found for slug: ${params.slug}`);
   const MDXLayout = getMDXComponent(currentPost.body.code);
@@ -43,6 +44,7 @@ export default function PostLayout({ params }: Props) {
     pre: Pre,
     YoutubeComponent: YoutubeComponent,
     a: CustomLink,
+    HoverLink: HoverLink,
   };
 
   return (

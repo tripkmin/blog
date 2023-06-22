@@ -24,7 +24,7 @@ export const Post = defineDocumentType(() => ({
     techs: { type: 'list', of: { type: 'string' }, required: false },
   },
   computedFields: {
-    url: { type: 'string', resolve: post => post._raw.flattenedPath },
+    url: { type: 'string', resolve: post => post._raw.sourceFileName.split('.mdx')[0] },
     readTimeMinutes: {
       type: 'number',
       resolve: post => Math.ceil(readingTime(post.body.raw).minutes), // 'readTimeMinutes' 계산 필드, 숫자 타입, 본문의 읽기 시간을 분 단위로 계산

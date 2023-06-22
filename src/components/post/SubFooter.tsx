@@ -39,18 +39,18 @@ export default function SubFooter({ postdata }: SubFooterType) {
           <Link
             href={`/${postdata.type.toLowerCase()}`}
             aria-label="목록으로"
-            className={`${styles.backToList} tooltip`}
-          >
+            className={`${styles.backToList} tooltip`}>
             <UndoIcon width={16} />
           </Link>
         </div>
       </div>
       <div
         className={styles.pagination}
-        style={!prevPost ? { flexFlow: 'row-reverse' } : undefined}
-      >
+        style={!prevPost ? { flexFlow: 'row-reverse' } : undefined}>
         {prevPost ? (
-          <Link href={`/${prevPost.url}`} className={styles.prevPagination}>
+          <Link
+            href={`/${prevPost.type.toLowerCase()}/${prevPost.url}`}
+            className={styles.prevPagination}>
             <LeftAngleIcon width={36} style={{ marginRight: '5px' }} />
             <div>
               <h5>이전 글</h5>
@@ -59,7 +59,9 @@ export default function SubFooter({ postdata }: SubFooterType) {
           </Link>
         ) : undefined}
         {nextPost ? (
-          <Link href={`/${nextPost.url}`} className={styles.nextpagination}>
+          <Link
+            href={`/${nextPost.type.toLowerCase()}/${nextPost.url}`}
+            className={styles.nextpagination}>
             <div>
               <h5>다음 글</h5>
               <h3>{nextPost.title}</h3>

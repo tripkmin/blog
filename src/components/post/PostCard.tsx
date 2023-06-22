@@ -7,7 +7,7 @@ import TechLogo from './TechLogo';
 
 export default function PostCard(post: Post) {
   return (
-    <Link href={post.url}>
+    <Link href={`/post/${post.url}`}>
       <div className={styles.postWrapper}>
         <div className={styles.postLeft}>
           <div>
@@ -43,8 +43,7 @@ export default function PostCard(post: Post) {
                   <div
                     key={idx}
                     className={`${styles.techIconWrapper} tooltip`}
-                    aria-label={tech}
-                  >
+                    aria-label={tech}>
                     <TechLogo tech={tech} />
                   </div>
                 );
