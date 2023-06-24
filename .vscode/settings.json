@@ -1,1 +1,8 @@
-{}
+{
+  "pasteImage.defaultName": "YYMMDD_HHmmss_${currentFileNameWithoutExt}",
+  "pasteImage.basePath": "${projectRoot}/public",
+  "pasteImage.path": "${projectRoot}/public/posts/postImg",
+  "pasteImage.forceUnixStyleSeparator": true,
+  "pasteImage.insertPattern": "![${imageFileNameWithoutExt}](${imageFilePath})",
+  "pasteImage.prefix": "/"
+}

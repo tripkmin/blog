@@ -95,6 +95,7 @@ div[data-rehype-pretty-code-fragment] {
 div[data-rehype-pretty-code-fragment] .line {
   border-left: 5px solid transparent;
   padding-left: var(--code-block-padding);
+  min-height: 1.2rem;
 }
 
 div[data-rehype-pretty-code-fragment] .line--highlighted {

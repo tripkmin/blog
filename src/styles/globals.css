@@ -228,7 +228,7 @@ body::-webkit-scrollbar-thumb,
 .hover-box {
   background-color: var(--background-color);
   max-width: 400px;
-  max-height: 350px;
+  max-height: 340px;
   overflow: auto;
   padding: 10px;
 }
@@ -615,8 +615,10 @@ details summary {
 }
 
 .content-area img {
-  width: 100%;
+  max-width: 100%;
   border-radius: 10px;
+  margin: auto;
+  display: block;
 }
 
 .content-area ul {
@@ -630,6 +632,7 @@ details summary {
   padding-inline-start: 20px;
   /* text-wrap: balance; */
   word-break: keep-all;
+  margin: 15px 0;
 }
 
 .content-area ol + ul {
