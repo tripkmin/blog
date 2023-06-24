@@ -1,0 +1,122 @@
+---
+title: Hydrate는 대체 뭘까
+date: 2023-06-24
+tags:
+  - 개념
+techs:
+  - Next.js
+---
+
+## TL;DR
+
+![230624_140757_what-is-hydration](/posts/postImg/230624_140757_what-is-hydration.png)
+
+- Hydrate란 서버 사이드에서 렌더링이 완료된 정적 페이지에 번들링 된 Javascript를 엮는 작업입니다.
+- Hydrate를 통해 서버에서 렌더링이 완료된 페이지를 클라이언트 측에 먼저 보내고 이후 JS를 실행함으로써 유저가 페이지의 초기 모습을 훨씬 더 빠른 시간안에 볼 수 있도록 하는 효과를 볼 수 있습니다.
+
+## Hydrate 예시
+
+Hydrate을 알아보기 위해 아래 예시를 한 번 살펴봅시다.
+src/app/page.jsx는 아래와 같은 구조로 되어있습니다.
+
+```tsx title="page.jsx" {8,11}
+import CSR from './CSR';
+import SSR from './SSR';
+
+export default function Home() {
+  return (
+    <div className="main">
+      <div>
+        <SSR />
+      </div>
+      <div>
+        <CSR />
+      </div>
+    </div>
+  );
+}
+```
+
+```jsx title="SSR.jsx"
+export default function SSR() {
+  return <h2>SSR 컴포넌트</h2>;
+}
+```
+
+```jsx title="CSR.jsx"
+'use client';
+
+import { useEffect, useState } from 'react';
+
+export default function CSR() {
+  const [state, setState] = useState(0);
+  const [state2, setState2] = useState(['lee', 'kim', 'park']);
+  const [state3, setState3] = useState(false);
+
+  useEffect(() => {
+    setState3(true);
+  }, []);
+
+  return (
+    <div>
+      <h2>CSR 컴포넌트</h2>
+      <span>{state}</span>
+      <button
+        onClick={() => {
+          setState(prev => prev + 1);
+        }}>
+        +1
+      </button>
+      {state2.map((name, idx) => (
+        <p key={idx}>{name}</p>
+      ))}
+      {state3 ? <p>state3이 true임</p> : null}
+    </div>
+  );
+}
+```
+
+위의 코드를 실행시킨 모습은 아래와 같습니다.
+
+![녹화_2023_06_24_13_39_21_730.gif](/posts/postImg/녹화_2023_06_24_13_39_21_730.gif)
+![230624_145012_what-is-hydration](/posts/postImg/230624_145012_what-is-hydration.png)
+
+위와 같은 프로젝트에서 자바스크립트를 비활성화한다면 어떤 모습이 될까요?
+JS를 비활성화했으니 클라이언트 사이드 컴포넌트는 아예 보이지 않아야 할 것 같습니다.
+
+![녹화_2023_06_24_13_40_38_856.gif](/posts/postImg/녹화_2023_06_24_13_40_38_856.gif)
+![230624_145020_what-is-hydration](/posts/postImg/230624_145020_what-is-hydration.png)
+
+어 그런데 클라이언트 사이드 컴포넌트도 얼추 모양새는 갖춘 상태로 불러와진 걸 볼 수 있습니다.
+브라우저에서 JS를 실행하지 않았음에도 말입니다.
+그래도 클라이언트 사이드 컴포넌트의 상태가 영 이상하긴 합니다.
+
+1. `state`, `state2`, `state3`의 최초값은 반영된 상태의 HTML을 받았음.
+2. 그렇지만 button에 달린 onClick 이벤트 핸들러가 동작하지 않음.
+3. 컴포넌트 최초 로드시 동작해야 하는 useEffect 문의 코드가 동작하지 않았음. 그에 따라 state3이 true일 때 보여야 하는 `<p>` 구문이 보이지 않는 상태.
+
+## Hydrate의 정의와 효과
+
+위 예시에서 가만보면 **React만의 고유 문법들(useEffect, useState, onClick 등)이 동작하지 않는다**는 걸 알 수 있습니다. 여기서 Hydrate란 **클라이언트 측에서 서버로부터 받은 정적 페이지에 JS를 결합해 매칭시키는 행위**를 말합니다.
+
+서버에서 렌더링이 완료된 페이지를 클라이언트 측에 먼저 보내고 이후 JS를 실행하기 때문에 **클라이언트 측에서 페이지의 초기 모습을 훨씬 빠르게 볼 수 있는 효과**를 볼 수 있습니다.
+
+## Hydrate 배경지식
+
+### CSR 방식
+
+웹사이트에 최초 접속시 서버가 클라이언트에게 빈 HTML과 번들링된 자바스크립트 뭉텅이를 냅다 줘버리고 니가 알아서 해석하라고 하는 CSR(Client Side Rendering) 방식이 등장했습니다. 경로를 변경하거나 특정 동작을 실행할 할 때에도 클라이언트 측에서 알아서 JS를 해석해 페이지를 렌더링시켜야 하기 때문에 초반에 주는 JS 코드의 양이 꽤 컸죠. 이 때문에 프로젝트의 사이즈가 커지면 초반에 자바스크립트를 받아오는 시간 동안 빈 페이지를 보여주는 시간이 길었고 이건 UX에 좋지 않은 영향을 끼쳤습니다.
+
+그 이외에도 CSR의 여러가지 문제점들 때문에 옛날처럼 서버측에서 완성된 HTML을 클라이언트에게 쥐여주는 SSR 방식으로 돌아가게 됩니다.
+
+### 다시 SSR 방식으로
+
+![230624_171957_what-is-hydration](/posts/postImg/230624_171957_what-is-hydration.png)
+
+근데 여기서 완전히 옛날 방식으로 돌아간 게 아니라 SSR 방식을 기본으로 깔고가되 CSR을 해야 하는 컴포넌트들을 분리해 그것들만 CSR로 돌려버리는 방식으로 되게 됩니다. React나 Vue의 컴포넌트형 접근 방식을 그대로 사용해 만들되, Hook과 같은 CSR 고유의 기능을 사용하는 컴포넌트만 별도로 CSR 컴포넌트로 만들어 클라이언트 측에서 렌더링합니다.
+
+1. 보여지는 화면만 먼저 렌더링해둔 HTML을 보냄. JS가 로드되지 않았기 때문에 조작은 불가능.
+2. 그동안 현재 화면의 실제 JS 코드를 열심히 해석함
+3. 전부 해석했으면 HTML의 DOM에 JS를 해석한 정보를 비교해서 끼워넣음. (reconcile)
+
+이것이 짧게 요약한 hydrate의 과정이라 할 수 있겠습니다.
