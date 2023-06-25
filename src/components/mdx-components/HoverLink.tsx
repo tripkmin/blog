@@ -1,7 +1,8 @@
 'use client';
+
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { allPosts } from 'contentlayer/generated';
-import { getMDXComponent } from 'next-contentlayer/hooks';
+import { useMDXComponent } from 'next-contentlayer/hooks';
 import { notFound } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { fontMono } from '@/libs/fonts';
@@ -23,6 +24,16 @@ export default function HoverLink({ title, children }: Props) {
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const spanRef = useRef<HTMLSpanElement>(null);
   const [transformValue, setTransformValue] = useState('0px');
+
+  // 현재는 post에 있는 것만 뽑아서 쓴다는 가정하에 코드를 짜놨음.
+  const currentPost = allPosts.find(post => post._raw.flattenedPath === `post/${title}`);
+  const MDXLayout = useMDXComponent(currentPost ? currentPost.body.code : '');
+  const components = {
+    pre: Pre,
+    YoutubeComponent: YoutubeDummy,
+    a: CustomLink,
+    HoverLink: HoverLink,
+  };
 
   useEffect(() => {
     if (isHovered && spanRef.current) {
@@ -54,6 +65,12 @@ export default function HoverLink({ title, children }: Props) {
     }
   }, [isHovered]);
 
+  if (!currentPost) {
+    return notFound();
+  }
+
+  // const MDXLayout = useMDXComponent(currentPost.body.code);
+
   const handleMouseEnter = () => {
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
@@ -78,22 +95,6 @@ export default function HoverLink({ title, children }: Props) {
       setIsShowing(false);
       hoverTimeoutRef.current = null;
     }, 500);
-  };
-
-  // 현재는 post에 있는 것만 뽑아서 쓴다는 가정하에 코드를 짜놨음.
-  const currentPost = allPosts.find(post => post._raw.flattenedPath === `post/${title}`);
-
-  if (!currentPost) {
-    return notFound();
-  }
-
-  const MDXLayout = getMDXComponent(currentPost.body.code);
-
-  const components = {
-    pre: Pre,
-    YoutubeComponent: YoutubeDummy,
-    a: CustomLink,
-    HoverLink: HoverLink,
   };
 
   return (
