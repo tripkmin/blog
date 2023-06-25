@@ -17,6 +17,8 @@ export default function HoverLink({ title, children }: Props) {
   }
 
   return (
-    <HoverLinkEl HoverPost={HoverPost.body.code} title={title} children={children} />
+    <HoverLinkEl HoverPost={HoverPost.body.code} title={title}>
+      {children}
+    </HoverLinkEl>
   );
 }
