@@ -1,7 +1,8 @@
 'use client';
+
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { allPosts } from 'contentlayer/generated';
-import { getMDXComponent } from 'next-contentlayer/hooks';
+import { useMDXComponent } from 'next-contentlayer/hooks';
 import { notFound } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { fontMono } from '@/libs/fonts';
@@ -87,7 +88,7 @@ export default function HoverLink({ title, children }: Props) {
     return notFound();
   }
 
-  const MDXLayout = getMDXComponent(currentPost.body.code);
+  const MDXLayout = useMDXComponent(currentPost.body.code);
 
   const components = {
     pre: Pre,
