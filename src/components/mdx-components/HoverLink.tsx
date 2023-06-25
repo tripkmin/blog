@@ -3,7 +3,6 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { allPosts } from 'contentlayer/generated';
 import { useMDXComponent } from 'next-contentlayer/hooks';
-import { useMDXComponent } from 'next-contentlayer/hooks';
 import { notFound } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { fontMono } from '@/libs/fonts';
