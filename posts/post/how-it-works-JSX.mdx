@@ -1,0 +1,135 @@
+---
+title: JSX는 어떻게 JS로 변환될까?
+date: 2023-06-26
+tags:
+  - 동작 원리
+techs:
+  - React
+  - Babel
+---
+
+## TL;DR
+
+- JSX는 **Babel** 플러그인에 의해서 변환됨.
+- Babel로 인해 JSX는 `React.createElement(type, props, ...children)`로 변환된다.
+  - **type**: `div`, `span`, `button`과 같은 HTML 요소 유형
+  - **props**: `className`, `onClick`과 같은 속성(property)들
+  - **children**(optional): 요소의 자식 요소. 문자, 숫자, React 요소, 혹은 배열도 가능
+- 예시
+  - JSX: `<button className="btn">버튼</button>`
+  - 바벨로 변환된 JSX: `React.createElement('button', {className: 'btn'}, '버튼')` 
+
+## JSX를 JS 코드로 변환해주는 Babel
+
+create-react-app을 통해 빠르게 프로젝트를 만들어내고 리액트의 사용법만 공부하다 문득 JSX가 어떤 식으로 동작하는지 궁금해졌다. <u>React에서 짜는 모든 코드들은 결국 자바스크립트일텐데 어떻게 HTML스럽게 작성할 수 있는 것일까?</u>
+
+<Alert>
+  React를 사용하기 전까지는 HTML로 최초 DOM 구조를 완성하고 JavaScript로 DOM을 조작해 동적인 변화를 줬다. 그런 React에서는 JSX로 앱의 구조를 표현하고, 컴포넌트는 JSX를 return한다. 그렇게 반환된 JSX들은 최종 컴포넌트 루트인 `App.jsx`에 모이게 되고, 이 `App.jsx`가 반환한 `<App />`은 `index.js`에서 렌더링이 된다.
+</Alert>
+
+![230626_130337_how-it-works-JSX](/posts/postImg/230626_130337_how-it-works-JSX.png)
+
+<Cap>사이버펑크 아님</Cap>
+
+우리가 리액트로 똥을 싸고있는 동안 뒷단에서 쌔빠지게 일하고 있는 친구들이 여럿 있는데, 그 중 하나가 바로 Babel 플러그인이다. Babel은 여러가지 중요한 기능을 수행하는데, **최신 문법**으로 짠 프로젝트를 빌드할 때 **예전 문법으로 변환**시켜 호환성을 보장하는 기능이 있고, 그리고 **JSX 문법을 JavaScript로 변환시켜주는 역할**을 해준다.
+
+길게 설명할 거 없이 바로 코드를 보자.
+
+## JSX → React.createElement()
+
+```tsx showLineNumbers
+// JSX 문법을 사용한 선언형 문법
+<button
+  onClick={() => {
+    console.log('hello world!');
+  }}>
+  버튼
+</button>;
+
+// 위 JSX를 Babel 플러그인을 사용해 JS 코드로 변환된 코드
+React.createElement(
+  'button',
+  {
+    onClick: () => {
+      console.log('hello world!');
+    },
+  },
+  '버튼'
+);
+```
+
+위 코드에서 보다시피 JSX를 3등분해서 `React.createElement()` 안에 넣는 것을 알 수 있다.
+createElement의 파라미터에는 순서대로 다음의 요소들이 들어간다
+
+- type: `div`, `span`, `button`과 같은 HTML 요소 유형
+- props: `className`, `onClick`과 같은 속성(property)들
+- children(optional): 요소의 자식 요소. 문자, 숫자, React 요소, 혹은 배열도 가능
+
+HTML에서 `onclick`이나 `class`와 같은 것은 attribute라고 불렀다. 그런데 JSX에서는 `div`, `p`와 같은 HTML 요소 뒤에 붙는 것들을 attribute 대신 property라고 부르지 않는가? <u>객체에서 프로퍼티란 key, value 한 쌍으로 이뤄진 데이터 쌍을 말한다</u>. 그리고 createElement의 두번째 파라미터를 보면 객체의 key, value 형식으로 속성이 정의된 것을 볼 수 있다. **즉 JSX에서의 속성들은 실은 객체 형식으로 변환되기 때문에 attribute라고 부르지 않고 property라고 부르게 되는 것이다.**
+
+## Props라고 불리게 된 이유
+
+상위 컴포넌트에서 하위 컴포넌트로 전달하는 props도 똑같은 원리다.
+
+```tsx showLineNumbers {4, 11-12}
+export default function Home(){
+  return (
+    <div>
+      <Test title='타이틀명' id='아이디' /> 
+    </div>
+  )
+}
+
+// 위의 Test 컴포넌트는 이렇게 변환된다.
+React.createElement(Test, {
+    title: '타이틀명',
+    id: '아이디'
+  }
+)
+```
+여기서 `{title: '타이틀명', id: '아이디'}` 라는 <u>property들이 하위 컴포넌트로 전달이 되는 것</u>이므로 properties, 즉 **props**라는 명칭이 붙게 된 것이었다.
+
+## 또 다른 예시
+
+```tsx showLineNumbers
+export default function Test() {
+  const [state, setState] = useState(0);
+
+  return (
+    <div>
+      <p>{state}</p>
+      <button
+        onClick={() => {
+          setState(prev => prev + 1);
+        }}></button>+ 1
+    </div>
+  );
+}
+```
+
+위와 같은 컴포넌트가 있다고 치자. 이걸 Babel이 바꾸면 아래와 같은 형식으로 변환된다.
+
+```tsx showLineNumbers
+import React, { useState } from 'react';
+
+export default function Test() {
+  const [state, setState] = useState(0);
+
+  return React.createElement(
+    'div',
+    null,
+    React.createElement('p', null, state),
+    React.createElement(
+      'button',
+      {
+        onClick: () => {
+          setState(prev => prev + 1);
+        },
+      },
+      '+ 1'
+    )
+  );
+}
+```
+
+위와 같은 변환 과정은 보통 눈에 안 보이므로 디버깅하거나 이해하는 것이 어려울 수 있다. 이런 경우 Babel의 [Try it Out](https://babeljs.io/repl) 페이지를 사용해 실시간으로 Babel이 어떻게 코드를 변환하는지 확인할 수 있다.
