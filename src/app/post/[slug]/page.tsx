@@ -12,6 +12,10 @@ import YoutubeComponent from '@/components/YoutubeComponent';
 import CustomLink from '@/components/mdx-components/CustomLink';
 import TocMobileTop from '@/components/post/TocMobileTop';
 import HoverLink from '@/components/mdx-components/HoverLink';
+import Code from '@/components/mdx-components/Code';
+import UnderLine from '@/components/mdx-components/UnderLine';
+import Alert from '@/components/mdx-components/Alert';
+import FigCaption from '@/components/mdx-components/FigCaption';
 
 // post/[slug]로부터 뽑아져오는 props.params를 정의하기 위한 인터페이스
 interface Props {
@@ -45,6 +49,10 @@ export default function PostLayout({ params }: Props) {
     YoutubeComponent: YoutubeComponent,
     a: CustomLink,
     HoverLink: HoverLink,
+    code: Code,
+    u: UnderLine,
+    Alert: Alert,
+    Cap: FigCaption,
   };
 
   return (

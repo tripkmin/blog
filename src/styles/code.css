@@ -22,28 +22,18 @@ body {
 }
 
 .content-area pre {
-  font-size: 12px;
+  font-size: 13px;
   line-height: 100%;
   padding: 30px 0;
-  /* padding: 30px 0 30px var(--code-block-padding); */
   background: #2b2b2b;
   border-radius: 10px;
   margin: 15px 0px;
-  /* font-family: 'JetBrains Mono'; */
   overflow-x: auto;
-  /* box-shadow: 0px 15px 39px -20px rgb(59 59 59);
-  -webkit-box-shadow: 0px 15px 39px -20px rgb(59 59 59);
-  -moz-box-shadow: 0px 15px 39px -20px rgb(59 59 59); */
-  /* box-shadow: var(--box-shadow);
-  -webkit-box-shadow: var(--box-shadow);
-  -moz-box-shadow: var(--box-shadow); */
 }
 
 div[data-rehype-pretty-code-title],
 .rehype-code-title {
   padding: 3px 30px;
-  /* font-family: 'JetBrains Mono', Menlo, Monaco, Consolas, 'Andale Mono', 'Ubuntu Mono',
-    'Courier New', monospace; */
   background-color: #444;
   color: white;
   z-index: 0;

@@ -10,6 +10,10 @@ import Pre from './Pre';
 import { CloseIcon, OpenInFullIcon, OpenInNewIcon } from '@/styles/svgIcons';
 import YoutubeDummy from './YoutubeDummy';
 import HoverLinkDummy from './HoverLinkDummy';
+import Code from './Code';
+import UnderLine from './UnderLine';
+import Alert from './Alert';
+import FigCaption from './FigCaption';
 
 interface Props {
   title: any;
@@ -30,6 +34,10 @@ export default function HoverLinkEl({ HoverPost, children, title }: Props) {
     YoutubeComponent: YoutubeDummy,
     a: CustomLink,
     HoverLink: HoverLinkDummy,
+    code: Code,
+    u: UnderLine,
+    Alert: Alert,
+    Cap: FigCaption,
   };
 
   const MDXLayout = useMDXComponent(HoverPost);
@@ -89,6 +97,20 @@ export default function HoverLinkEl({ HoverPost, children, title }: Props) {
       hoverTimeoutRef.current = null;
     }, 500);
   };
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (spanRef.current && !spanRef.current.contains(e.target as Node)) {
+        setIsShowing(false);
+        setIsHovered(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [spanRef]);
 
   return (
     <>

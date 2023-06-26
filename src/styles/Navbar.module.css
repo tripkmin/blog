@@ -63,11 +63,12 @@ html[data-theme='dark'] .blurOn {
 
 .currentPage {
   color: var(--text-bold-color);
+  transition: all var(--transition-2);
 }
 
 .categoryWrapper a:not(.currentPage),
 .mobileCategoryWrapper a:not(.currentPage) {
-  color: var(--text-color);
+  color: var(--text-primary-color);
   transition: color var(--transition-1);
 }
 

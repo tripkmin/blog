@@ -8,7 +8,8 @@ html {
   --background-color: #fff;
   --background-color-transparent: #f5f5f5c9;
   --background-neutral-color: #aaa;
-  --text-color: #444;
+  --text-primary-color: #444;
+  --text-secondary-color: #666;
   --text-bold-color: #222;
   --post-card-color: #fff;
   --post-card-hover-color: #eee;
@@ -35,7 +36,8 @@ html[data-theme='dark'] {
   --background-color: #222;
   --background-color-transparent: #333333cc;
   --background-neutral-color: #777;
-  --text-color: #ddd;
+  --text-primary-color: #ddd;
+  --text-secondary-color: #aaa;
   --text-bold-color: #fff;
   --post-card-color: #2e2e2e;
   --post-card-hover-color: #333;
@@ -283,7 +285,7 @@ option,
 li,
 ul,
 a {
-  color: var(--text-color);
+  color: var(--text-primary-color);
 }
 
 button {
@@ -564,11 +566,12 @@ details summary {
 .content-area h6 .anchor {
   color: var(--text-bold-color);
 }
+
 .content-area a {
   text-decoration: underline wavy;
   text-decoration-color: #ff707e86;
   transition: all var(--transition-2);
-  color: var(--text-color);
+  color: var(--text-primary-color);
 }
 
 .content-area a:hover {
@@ -579,8 +582,9 @@ details summary {
 .content-area code:not(pre code) {
   padding: 2px 8px;
   background-color: var(--sub-border-color);
-  border-radius: 5px;
-  transition: background-color var(--transition-2);
+  border-radius: 8px;
+  transition: background-color var(--transition-3);
+  border: 1px solid var(--background-neutral-color);
 }
 
 /* 나중에 필요할 때 써먹어보자 */
@@ -645,7 +649,7 @@ details summary {
   line-height: 180%;
   border-bottom: 1px solid var(--main-border-color);
   padding: 5px 10px;
-  color: var(--text-color);
+  color: var(--text-primary-color);
 }
 
 .content-area th {
