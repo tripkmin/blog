@@ -1,6 +1,6 @@
 import styles from '@/styles/PostDetail.module.css';
 import { LeftAngleIcon, RightAngleIcon, TagIcon, UndoIcon } from '@/styles/svgIcons';
-import { filterNonDraft } from '@/utils/util';
+import { excludeDrafts } from '@/utils/util';
 import { Log, Post, allLogs, allPosts } from 'contentlayer/generated';
 import dayjs from 'dayjs';
 import Link from 'next/link';
@@ -16,7 +16,7 @@ export default function SubFooter({ postdata }: SubFooterType) {
   };
 
   // 이전 포스트, 다음 포스트를 위한 코드들
-  const displayPosts = filterNonDraft(dataMap[postdata.type]).sort((a, b) =>
+  const displayPosts = excludeDrafts(dataMap[postdata.type]).sort((a, b) =>
     dayjs(b.date).diff(a.date)
   );
 

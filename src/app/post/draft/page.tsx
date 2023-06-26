@@ -1,7 +1,7 @@
 import styles from '@/styles/Post.module.css';
 import dayjs from 'dayjs';
 import { allPosts, Post } from 'contentlayer/generated';
-import { excludeDrafts } from '../../utils/util';
+import { getDrafts } from '@/utils/util';
 import PostCard from '@/components/post/PostCard';
 import SubHeader from '@/components/common/SubHeader';
 import { phrases } from 'data/phrases';
@@ -16,7 +16,7 @@ export default function Post() {
   // };
 
   // draft가 false인 것들만 가져오고 최신순으로 정렬.
-  const posts = (excludeDrafts(allPosts) as Post[]).sort((a, b) =>
+  const posts = (getDrafts(allPosts) as Post[]).sort((a, b) =>
     dayjs(b.date).diff(a.date)
   );
 
@@ -34,8 +34,8 @@ export default function Post() {
   return (
     <>
       <SubHeader
-        title={phrases.Post.title}
-        description={phrases.Post.description}></SubHeader>
+        title={phrases.PostDrafts.title}
+        description={phrases.PostDrafts.description}></SubHeader>
       <section>
         <div className="main-section">
           {/* <Aside

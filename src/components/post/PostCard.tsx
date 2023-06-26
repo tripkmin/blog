@@ -2,7 +2,7 @@ import { Post } from 'contentlayer/generated';
 import Link from 'next/link';
 import styles from '@/styles/Post.module.css';
 import { CalendarIcon, TimerIcon } from '@/styles/svgIcons';
-import { formattedDate } from '@/utils/util';
+import { formatDate } from '@/utils/util';
 import TechLogo from './TechLogo';
 
 export default function PostCard(post: Post) {
@@ -30,7 +30,7 @@ export default function PostCard(post: Post) {
           <div className={styles.infoBox}>
             <div>
               <CalendarIcon width={10} style={{ marginRight: '5px' }} />
-              <span className="small-info">{formattedDate(post.date)}</span>
+              <span className="small-info">{formatDate(post.date)}</span>
               <TimerIcon width={10} style={{ marginRight: '5px' }} />
               <span className="small-info">{post.readTimeMinutes}분</span>
             </div>

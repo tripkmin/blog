@@ -1,6 +1,6 @@
 import { CalendarIcon, TimerIcon } from '@/styles/svgIcons';
 import styles from '@/styles/PostDetail.module.css';
-import { formattedDate } from '@/utils/util';
+import { formatDate } from '@/utils/util';
 import { Log, Post, Project } from 'contentlayer/generated';
 
 interface SubHeaderType {
@@ -14,7 +14,7 @@ export default function SubHeader({ postdata }: SubHeaderType) {
       <div className={styles.infoBox}>
         <CalendarIcon width={12} style={{ marginRight: '5px' }} />
         <span className="small-info">
-          <time dateTime={postdata.date}>{formattedDate(postdata.date)}</time>
+          <time dateTime={postdata.date}>{formatDate(postdata.date)}</time>
         </span>
         <TimerIcon width={12} style={{ marginRight: '5px' }} />
         <span className="small-info">{postdata.readTimeMinutes}분</span>

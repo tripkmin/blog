@@ -1,19 +1,18 @@
 import { Post, Project, Log } from 'contentlayer/generated';
 import dayjs from 'dayjs';
 
-type Draftable = Post | Project | Log;
+type allDocuments = Post | Project | Log;
 
-export const filterNonDraft = (allPost: Draftable[]) => {
-  return allPost.filter(el => !el.draft);
+export const sortByDateDescending = (documents: allDocuments[]) => {
+  return documents.sort((a, b) => dayjs(b.date).diff(a.date));
 };
 
-export const selectedTheme = () => {
-  const theme = localStorage.getItem('theme');
-  if (theme === 'light' || theme === null) {
-    return 'light';
-  } else {
-    return 'dark';
-  }
+export const excludeDrafts = (documents: allDocuments[]) => {
+  return documents.filter(el => !el.draft);
+};
+
+export const getDrafts = (documents: allDocuments[]) => {
+  return documents.filter(el => el.draft);
 };
 
 export const scrollToTop = () => {
@@ -23,7 +22,7 @@ export const scrollToTop = () => {
   });
 };
 
-export const formattedDate = (date: string) => {
+export const formatDate = (date: string) => {
   return dayjs(date).format('YYYY. MM. DD');
 };
 

@@ -2,7 +2,7 @@ import { Log } from 'contentlayer/generated';
 import Link from 'next/link';
 import styles from '@/styles/Post.module.css';
 import { CalendarIcon, TimerIcon } from '@/styles/svgIcons';
-import { formattedDate } from '@/utils/util';
+import { formatDate } from '@/utils/util';
 
 export default function LogCard(log: Log) {
   return (
@@ -24,7 +24,7 @@ export default function LogCard(log: Log) {
           <div className={styles.infoBox}>
             <div>
               <CalendarIcon width={10} style={{ marginRight: '5px' }} />
-              <span className="small-info">{formattedDate(log.date)}</span>
+              <span className="small-info">{formatDate(log.date)}</span>
               <TimerIcon width={10} style={{ marginRight: '5px' }} />
               <span className="small-info">{log.readTimeMinutes}분</span>
             </div>
