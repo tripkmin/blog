@@ -3,8 +3,9 @@ import dayjs from 'dayjs';
 
 type allDocuments = Post | Project | Log;
 
-export const sortByDateDescending = (documents: allDocuments[]) => {
-  return documents.sort((a, b) => dayjs(b.date).diff(a.date));
+export const sortByDate = (documents: allDocuments[]) => {
+  // sort 함수는 원본을 변형시키므로 shallow copy를 통해 원본 변형을 방지함.
+  return [...documents].sort((a, b) => dayjs(b.date).diff(a.date));
 };
 
 export const excludeDrafts = (documents: allDocuments[]) => {
