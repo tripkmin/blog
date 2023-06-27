@@ -129,3 +129,129 @@ z = 3;
 // 속성 삭제
 delete user.firstName;
 ```
+
+## 4장. 액션에서 계산 빼내기
+
+> 테스트하기 쉽고 재사용성이 좋은 코드를 만들기 위한 함수형 기술에 대해 알아보자.
+> 액션에서 계산을 빼내는 방법을 배우자.
+> 어떻게 함수로 정보가 들어가고 나오는지 살펴보자.
+
+```js
+var shoppingCart = []
+var shoppingCartTotal = 0;
+
+function addItemToCart(name, price){
+  shoppingCart.push({
+    name: name,
+    price: price
+  })
+  calcCartTotal()
+}
+
+function updateTaxDom(){
+  setTaxDom(shoppingCartTotal * 0.1)
+}
+
+function updateShippingIcons() {
+  var buyBtns = getBuyBtnsDom();
+  for (var i = 0; i < buyBtns.length; i++) {
+    var btn = buyBtns[i];
+    var item;
+  }
+}
+
+function calcCartTotal(){
+  shoppingCartTotal = 0;
+  for(var i = 0; i < shoppingCart.length; i++){
+    var item = shoppingCart[i];
+    shoppingCartTotal ++ item.price
+  }
+  setCartTotalDom() // DOM에 카트 총액을 업데이트 하는 함수
+  updateShippingIcons()
+  updateTaxDom()
+}
+```
+
+여기서 구매 합계가 20달러 이상이면 무료배송을 해주려고 함. 현재 장바구니에 들어있는 아이템의 금액에서 특정 제품을 담으면 20달러 이상이 되어 무료배송이 된다는 딱지를 붙이고 싶은 상황.
+
+**절차적으로 구현**
+
+```js
+
+```
+
+모든 함수에는 입력과 출력이 있음. 입력은 함수가 계산을 하기 위한 외부 정보, 출력은 함수 밖으로 나오는 정보나 어떤 동작임. 함수를 부르는 이유는 결과가 필요하기 때문. 그리고 원하는 결과를 얻으려면 입력이 필요함.
+
+```js
+
+```
+
+```js
+var total = 0;
+function addToTotal(amount) {
+  console.log('이전 토탈: ' + total);
+  total += amount;
+  return total;
+}
+```
+
+명시적 입력: 인자
+암묵적 입력: 인자 외 다른 입력
+명시적 출력: 리턴값
+암묵적 출력: 리턴값 외 다른 출력
+
+암묵적 임력, 암묵적 출력을 Side Effect라고 부름. 부수 효과는 함수가 하려고 하는 주요 기능(리턴값을 계산하는 일)이 아님. 그리고 함수에 암묵적 임력과 출력이 있으면 액션이 됨. 반대로 암묵적 입력과 출력을 없애면 계산이 됨. 암묵적 입력은 인자로 바꾸고, 암묵적 출력은 함수의 리턴값으로 바꾸면 됨.
+
+```
+function updateTaxDom(){
+  setTaxDom(shoppingCartTotal * 0.10);
+}
+
+function updateTaxDom(){
+  const tax = calcTax(shoppingcartTotal)
+  setTaxDom(tax)
+}
+
+function calcTax(total){
+  return total * 0.1
+}
+```
+
+```
+function updateShippingIcons() {
+  var buyBtns = getBuyBtnsDom();
+  for(var i=0; i<buyBtns.length; i++){
+    var btn = buyBtns[i];
+    var item = btn.item
+    if(item.price + shoppingCartTotal >= 20){
+      return btn.showFreeShippingIcon();
+    } else {
+      return btn.hideFreeShippingIcon();
+    }
+  }
+}
+
+//
+
+function isFreeShipping(price, total){
+  if(price + total >= 20){
+    return true
+  } else {
+    return false
+  }
+}
+
+function updateShippingIcons() {
+  var buyBtns = getBuyBtnsDom();
+  for(var i=0; i<buyBtns.length; i++){
+    var btn = buyBtns[i];
+    var item = btn.item
+    if(isFreeShipping(item.price, shoppingCartTotal)){
+      return btn.showFreeShippingIcon();
+    } else {
+      return btn.hideFreeShippingIcon();
+    }
+  }
+}
+
+```
