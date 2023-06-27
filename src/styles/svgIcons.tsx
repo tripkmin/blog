@@ -7,9 +7,16 @@ type LogoIconParams = {
   width?: number | string | undefined;
   height?: number | string | undefined;
   style?: CSSProperties;
+  className?: string;
 };
 
-export const ExpandMoreIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const ExpandMoreIcon = ({
+  color,
+  width,
+  height,
+  style,
+  className,
+}: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -22,7 +29,7 @@ export const ExpandMoreIcon = ({ color, width, height, style }: LogoIconParams) 
     </svg>
   );
 };
-export const LogoIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const LogoIcon = ({ color, width, height, style, className }: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -53,7 +60,13 @@ export const LogoIcon = ({ color, width, height, style }: LogoIconParams) => {
     // </svg>
   );
 };
-export const CalendarIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const CalendarIcon = ({
+  color,
+  width,
+  height,
+  style,
+  className,
+}: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -66,7 +79,13 @@ export const CalendarIcon = ({ color, width, height, style }: LogoIconParams) =>
     </svg>
   );
 };
-export const DarkmodeIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const DarkmodeIcon = ({
+  color,
+  width,
+  height,
+  style,
+  className,
+}: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +98,13 @@ export const DarkmodeIcon = ({ color, width, height, style }: LogoIconParams) =>
     </svg>
   );
 };
-export const LightmodeIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const LightmodeIcon = ({
+  color,
+  width,
+  height,
+  style,
+  className,
+}: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -92,7 +117,13 @@ export const LightmodeIcon = ({ color, width, height, style }: LogoIconParams) =
     </svg>
   );
 };
-export const GithubIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const GithubIcon = ({
+  color,
+  width,
+  height,
+  style,
+  className,
+}: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -111,7 +142,7 @@ export const GithubIcon = ({ color, width, height, style }: LogoIconParams) => {
     </svg>
   );
 };
-export const UndoIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const UndoIcon = ({ color, width, height, style, className }: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -125,7 +156,13 @@ export const UndoIcon = ({ color, width, height, style }: LogoIconParams) => {
     </svg>
   );
 };
-export const ClipboardIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const ClipboardIcon = ({
+  color,
+  width,
+  height,
+  style,
+  className,
+}: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -138,7 +175,7 @@ export const ClipboardIcon = ({ color, width, height, style }: LogoIconParams) =
     </svg>
   );
 };
-export const ListIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const ListIcon = ({ color, width, height, style, className }: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -151,7 +188,7 @@ export const ListIcon = ({ color, width, height, style }: LogoIconParams) => {
     </svg>
   );
 };
-export const ResetIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const ResetIcon = ({ color, width, height, style, className }: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -164,7 +201,13 @@ export const ResetIcon = ({ color, width, height, style }: LogoIconParams) => {
     </svg>
   );
 };
-export const LeftAngleIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const LeftAngleIcon = ({
+  color,
+  width,
+  height,
+  style,
+  className,
+}: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -177,7 +220,13 @@ export const LeftAngleIcon = ({ color, width, height, style }: LogoIconParams) =
     </svg>
   );
 };
-export const RightAngleIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const RightAngleIcon = ({
+  color,
+  width,
+  height,
+  style,
+  className,
+}: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -190,7 +239,7 @@ export const RightAngleIcon = ({ color, width, height, style }: LogoIconParams) 
     </svg>
   );
 };
-export const TagIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const TagIcon = ({ color, width, height, style, className }: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -203,7 +252,7 @@ export const TagIcon = ({ color, width, height, style }: LogoIconParams) => {
     </svg>
   );
 };
-export const TimerIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const TimerIcon = ({ color, width, height, style, className }: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -216,7 +265,7 @@ export const TimerIcon = ({ color, width, height, style }: LogoIconParams) => {
     </svg>
   );
 };
-export const MenuIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const MenuIcon = ({ color, width, height, style, className }: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -229,7 +278,7 @@ export const MenuIcon = ({ color, width, height, style }: LogoIconParams) => {
     </svg>
   );
 };
-export const CheckIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const CheckIcon = ({ color, width, height, style, className }: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -242,7 +291,7 @@ export const CheckIcon = ({ color, width, height, style }: LogoIconParams) => {
     </svg>
   );
 };
-export const UpIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const UpIcon = ({ color, width, height, style, className }: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -255,7 +304,7 @@ export const UpIcon = ({ color, width, height, style }: LogoIconParams) => {
     </svg>
   );
 };
-export const LinkIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const LinkIcon = ({ color, width, height, style, className }: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -268,7 +317,7 @@ export const LinkIcon = ({ color, width, height, style }: LogoIconParams) => {
     </svg>
   );
 };
-export const BookIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const BookIcon = ({ color, width, height, style, className }: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -282,7 +331,13 @@ export const BookIcon = ({ color, width, height, style }: LogoIconParams) => {
   );
 };
 
-export const OpenInNewIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const OpenInNewIcon = ({
+  color,
+  width,
+  height,
+  style,
+  className,
+}: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -299,13 +354,14 @@ export const OpenInNewIcon = ({ color, width, height, style }: LogoIconParams) =
   );
 };
 
-export const CloseIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const CloseIcon = ({ color, width, height, style, className }: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       height={height}
       width={width}
       style={style}
+      className={className}
       fill="currentColor"
       viewBox="0 -960 960 960">
       <path
@@ -316,7 +372,13 @@ export const CloseIcon = ({ color, width, height, style }: LogoIconParams) => {
   );
 };
 
-export const OpenInFullIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const OpenInFullIcon = ({
+  color,
+  width,
+  height,
+  style,
+  className,
+}: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -333,7 +395,13 @@ export const OpenInFullIcon = ({ color, width, height, style }: LogoIconParams) 
   );
 };
 
-export const YoutubeIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const YoutubeIcon = ({
+  color,
+  width,
+  height,
+  style,
+  className,
+}: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -351,7 +419,13 @@ export const YoutubeIcon = ({ color, width, height, style }: LogoIconParams) => 
   );
 };
 
-export const AutoStoriesIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const AutoStoriesIcon = ({
+  color,
+  width,
+  height,
+  style,
+  className,
+}: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -365,7 +439,13 @@ export const AutoStoriesIcon = ({ color, width, height, style }: LogoIconParams)
   );
 };
 
-export const SearchIcon = ({ color, width, height, style }: LogoIconParams) => {
+export const SearchIcon = ({
+  color,
+  width,
+  height,
+  style,
+  className,
+}: LogoIconParams) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

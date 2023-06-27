@@ -7,7 +7,7 @@ import SubHeader from '@/components/common/SubHeader';
 import { phrases } from 'data/phrases';
 
 import { useState } from 'react';
-import { SearchIcon } from '@/styles/svgIcons';
+import { CloseIcon, SearchIcon } from '@/styles/svgIcons';
 import { Pretendard } from '@/libs/fonts';
 import useDebounce from '@/hooks/useDebounce';
 
@@ -39,8 +39,7 @@ export default function ListLayout({ posts }: ListLayoutType) {
     <>
       <SubHeader
         title={phrases.Post.title}
-        description={phrases.Post.description}
-      ></SubHeader>
+        description={phrases.Post.description}></SubHeader>
       <section>
         <div className="main-section">
           <div>
@@ -50,15 +49,43 @@ export default function ListLayout({ posts }: ListLayoutType) {
                 <h5>({displayedPosts.length})</h5>
               </div>
               <div className={style.postSearchWrapper}>
-                <SearchIcon width={20}></SearchIcon>
+                <SearchIcon
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    transform: 'translate(50%, -50%)',
+                  }}
+                  width={20}></SearchIcon>
                 <input
                   type="text"
                   value={value}
                   onChange={e => {
                     setValue(e.target.value.toLowerCase());
                   }}
-                  className={Pretendard.className}
-                ></input>
+                  className={Pretendard.className}></input>
+                <button
+                  className={style.inputBtn}
+                  onClick={() => {
+                    setValue('');
+                  }}>
+                  <CloseIcon
+                    className={value ? style.btnEnabled : style.btnDisabled}
+                    // style={
+                    //   value
+                    //     ? {
+                    //         color: 'var(--text-bold-color)',
+                    //         transition: 'all 0.2s',
+                    //         cursor: 'pointer',
+                    //       }
+                    //     : {
+                    //         color: 'var(--text-bold-color)',
+                    //         transition: 'all 0.2s',
+                    //         cursor: 'auto',
+                    //       }
+                    // }
+                    width={16}
+                  />
+                </button>
               </div>
             </div>
             <div className={style.postList}>

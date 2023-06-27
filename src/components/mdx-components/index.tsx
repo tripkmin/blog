@@ -1,4 +1,4 @@
-import { getMDXComponent } from 'next-contentlayer/hooks';
+import { getMDXComponent, useMDXComponent } from 'next-contentlayer/hooks';
 import Pre from '@/components/mdx-components/Pre';
 import YoutubeComponent from '@/components/YoutubeComponent';
 import CustomLink from '@/components/mdx-components/CustomLink';
@@ -13,6 +13,10 @@ import YoutubeDummy from './YoutubeDummy';
 export const getMDXLayout = (code: string) => {
   return getMDXComponent(code);
 };
+
+export const useMDXLayout = (code: string) => {
+  return useMDXComponent(code)
+}
 
 export const postComponents = {
   pre: Pre,

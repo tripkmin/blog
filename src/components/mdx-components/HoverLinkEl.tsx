@@ -5,28 +5,28 @@ import { useRouter } from 'next/navigation';
 import { fontMono } from '@/libs/fonts';
 import Link from 'next/link';
 import { CloseIcon, OpenInFullIcon, OpenInNewIcon } from '@/styles/svgIcons';
-import { HoverComponents, getMDXLayout } from '.';
+import { HoverComponents, useMDXLayout } from '.';
 import useDebounce from '@/hooks/useDebounce';
 
 interface Props {
-  title: any;
   HoverPost?: any;
-  children: ReactNode;
+  title: any;
   sourceFileName: string;
+  children: ReactNode;
 }
 
 export default function HoverLinkEl({
   HoverPost,
-  children,
   title,
   sourceFileName,
+  children,
 }: Props) {
   const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
   const debouncedIsHovered = useDebounce(isHovered, 300);
   const [transformValue, setTransformValue] = useState('0px');
   const spanRef = useRef<HTMLSpanElement>(null);
-  const MDXLayout = getMDXLayout(HoverPost);
+  const MDXLayout = useMDXLayout(HoverPost);
 
   // HoverLinkBox가 나타나는 좌표를 계산해 반영함.
   useEffect(() => {
@@ -87,16 +87,14 @@ export default function HoverLinkEl({
         ref={spanRef}
         style={{ position: 'relative' }}
         onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
+        onMouseLeave={handleMouseLeave}>
         <Link className="hover-link" href={`/post/${sourceFileName}`}>
           {children}
         </Link>
         {debouncedIsHovered ? (
           <div
             className={`hover-box-wrapper`}
-            style={{ transform: `translateX(${transformValue})` }}
-          >
+            style={{ transform: `translateX(${transformValue})` }}>
             <div className="hover-link-header">
               <div className="hover-link-title-wrapper">
                 <strong>{title}</strong>
@@ -106,16 +104,14 @@ export default function HoverLinkEl({
                   className="rect-btn"
                   onClick={() => {
                     router.push(`/post/${sourceFileName}`);
-                  }}
-                >
+                  }}>
                   <OpenInFullIcon width={16} />
                 </button>
                 <button
                   className="rect-btn"
                   onClick={() => {
                     setIsHovered(false);
-                  }}
-                >
+                  }}>
                   <CloseIcon width={16} />
                 </button>
               </div>
@@ -130,8 +126,7 @@ export default function HoverLinkEl({
         className="hover-link-btn rect-btn"
         onClick={() => {
           setIsHovered(true);
-        }}
-      >
+        }}>
         <OpenInNewIcon width={20} />
       </button>
     </>
