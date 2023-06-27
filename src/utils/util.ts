@@ -23,6 +23,10 @@ export const scrollToTop = () => {
   });
 };
 
+export const getBaseName = (name: string) => {
+  return name.split('.')[0];
+};
+
 export const formatDate = (date: string) => {
   return dayjs(date).format('YYYY. MM. DD');
 };

@@ -17,7 +17,7 @@ interface ListLayoutType {
 
 export default function ListLayout({ posts }: ListLayoutType) {
   const [value, setValue] = useState<string>('');
-  const debouncedValue = useDebounce(value, 300);
+  const debouncedValue = useDebounce(value, 300) as string;
 
   const filterPosts = (debouncedValue: string) => {
     if (debouncedValue === '') {
@@ -39,7 +39,8 @@ export default function ListLayout({ posts }: ListLayoutType) {
     <>
       <SubHeader
         title={phrases.Post.title}
-        description={phrases.Post.description}></SubHeader>
+        description={phrases.Post.description}
+      ></SubHeader>
       <section>
         <div className="main-section">
           <div>
@@ -56,7 +57,8 @@ export default function ListLayout({ posts }: ListLayoutType) {
                   onChange={e => {
                     setValue(e.target.value.toLowerCase());
                   }}
-                  className={Pretendard.className}></input>
+                  className={Pretendard.className}
+                ></input>
               </div>
             </div>
             <div className={style.postList}>

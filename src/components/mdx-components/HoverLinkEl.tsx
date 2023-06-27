@@ -1,55 +1,43 @@
 'use client';
 
 import { ReactNode, useEffect, useRef, useState } from 'react';
-import { useMDXComponent } from 'next-contentlayer/hooks';
 import { useRouter } from 'next/navigation';
 import { fontMono } from '@/libs/fonts';
 import Link from 'next/link';
-import CustomLink from './CustomLink';
-import Pre from './Pre';
 import { CloseIcon, OpenInFullIcon, OpenInNewIcon } from '@/styles/svgIcons';
-import YoutubeDummy from './YoutubeDummy';
-import HoverLinkDummy from './HoverLinkDummy';
-import Code from './Code';
-import UnderLine from './UnderLine';
-import Alert from './Alert';
-import FigCaption from './FigCaption';
+import { HoverComponents, getMDXLayout } from '.';
+import useDebounce from '@/hooks/useDebounce';
 
 interface Props {
   title: any;
   HoverPost?: any;
   children: ReactNode;
+  sourceFileName: string;
 }
 
-export default function HoverLinkEl({ HoverPost, children, title }: Props) {
+export default function HoverLinkEl({
+  HoverPost,
+  children,
+  title,
+  sourceFileName,
+}: Props) {
   const router = useRouter();
-  const [isShowing, setIsShowing] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const debouncedIsHovered = useDebounce(isHovered, 300);
   const [transformValue, setTransformValue] = useState('0px');
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const spanRef = useRef<HTMLSpanElement>(null);
+  const MDXLayout = getMDXLayout(HoverPost);
 
-  const components = {
-    pre: Pre,
-    YoutubeComponent: YoutubeDummy,
-    a: CustomLink,
-    HoverLink: HoverLinkDummy,
-    code: Code,
-    u: UnderLine,
-    Alert: Alert,
-    Cap: FigCaption,
-  };
-
-  const MDXLayout = useMDXComponent(HoverPost);
-
+  // HoverLinkBox가 나타나는 좌표를 계산해 반영함.
   useEffect(() => {
     if (isHovered && spanRef.current) {
       const rect = spanRef.current.getBoundingClientRect();
       const hoverBoxWidth = 400;
+      const contentAreaWidth = 768;
       let width;
       let rectRight;
       let rectLeft;
-      if (window.innerWidth > 768) {
+      if (window.innerWidth > contentAreaWidth) {
         width = 768;
         rectRight = rect.right - (window.innerWidth - 768) / 2;
         rectLeft = rect.left - (window.innerWidth - 768) / 2;
@@ -73,35 +61,16 @@ export default function HoverLinkEl({ HoverPost, children, title }: Props) {
   }, [isHovered]);
 
   const handleMouseEnter = () => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-      hoverTimeoutRef.current = null;
-    }
-
     setIsHovered(true);
-    hoverTimeoutRef.current = setTimeout(() => {
-      setIsShowing(true);
-      hoverTimeoutRef.current = null;
-    }, 500);
   };
 
   const handleMouseLeave = () => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-      hoverTimeoutRef.current = null;
-    }
-
     setIsHovered(false);
-    hoverTimeoutRef.current = setTimeout(() => {
-      setIsShowing(false);
-      hoverTimeoutRef.current = null;
-    }, 500);
   };
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (spanRef.current && !spanRef.current.contains(e.target as Node)) {
-        setIsShowing(false);
         setIsHovered(false);
       }
     }
@@ -118,37 +87,41 @@ export default function HoverLinkEl({ HoverPost, children, title }: Props) {
         ref={spanRef}
         style={{ position: 'relative' }}
         onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}>
-        <Link className="hover-link" href={`/post/${title}`}>
+        onMouseLeave={handleMouseLeave}
+      >
+        <Link className="hover-link" href={`/post/${sourceFileName}`}>
           {children}
         </Link>
-        {isShowing ? (
+        {debouncedIsHovered ? (
           <div
             className={`hover-box-wrapper`}
-            style={{ transform: `translateX(${transformValue})` }}>
+            style={{ transform: `translateX(${transformValue})` }}
+          >
             <div className="hover-link-header">
               <div className="hover-link-title-wrapper">
-                {/* <strong>{title}</strong> */}
+                <strong>{title}</strong>
               </div>
               <div className="hover-link-btn-wrapper">
                 <button
                   className="rect-btn"
                   onClick={() => {
-                    router.push(`/post/${title}`);
-                  }}>
+                    router.push(`/post/${sourceFileName}`);
+                  }}
+                >
                   <OpenInFullIcon width={16} />
                 </button>
                 <button
                   className="rect-btn"
                   onClick={() => {
-                    setIsShowing(false);
-                  }}>
+                    setIsHovered(false);
+                  }}
+                >
                   <CloseIcon width={16} />
                 </button>
               </div>
             </div>
             <div className="hover-box">
-              <MDXLayout className={fontMono.className} components={components} />
+              <MDXLayout className={fontMono.className} components={HoverComponents} />
             </div>
           </div>
         ) : null}
@@ -156,8 +129,9 @@ export default function HoverLinkEl({ HoverPost, children, title }: Props) {
       <button
         className="hover-link-btn rect-btn"
         onClick={() => {
-          setIsShowing(true);
-        }}>
+          setIsHovered(true);
+        }}
+      >
         <OpenInNewIcon width={20} />
       </button>
     </>

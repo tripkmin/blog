@@ -6,7 +6,6 @@ export default function Post() {
   const getPosts = () => {
     const filteredPosts = allPosts.filter(post => !post.draft);
     const sortedPost = [...filteredPosts].sort((a, b) => dayjs(b.date).diff(a.date));
-
     return sortedPost;
   };
 
