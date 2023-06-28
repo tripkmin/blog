@@ -20,8 +20,7 @@ export default function HoverLink({ title, children }: Props) {
     <HoverLinkEl
       HoverPost={HoverPost.body.code}
       title={HoverPost.title}
-      sourceFileName={getBaseName(HoverPost._raw.sourceFileName)}
-    >
+      sourceFileName={getBaseName(HoverPost._raw.sourceFileName)}>
       {children}
     </HoverLinkEl>
   );

@@ -5,9 +5,16 @@ import { useRouter } from 'next/navigation';
 import { fontMono } from '@/libs/fonts';
 import Link from 'next/link';
 import { CloseIcon, OpenInFullIcon, OpenInNewIcon } from '@/styles/svgIcons';
-import { HoverComponents } from '.';
 import useDebounce from '@/hooks/useDebounce';
 import { useMDXComponent } from 'next-contentlayer/hooks';
+import Pre from '@/components/mdx-components/Pre';
+import CustomLink from '@/components/mdx-components/CustomLink';
+import Code from '@/components/mdx-components/Code';
+import UnderLine from '@/components/mdx-components/UnderLine';
+import Alert from '@/components/mdx-components/Alert';
+import FigCaption from '@/components/mdx-components/FigCaption';
+import HoverLinkDummy from './HoverLinkDummy';
+import YoutubeDummy from './YoutubeDummy';
 
 interface Props {
   HoverPost?: any;
@@ -28,6 +35,17 @@ export default function HoverLinkEl({
   const [transformValue, setTransformValue] = useState('0px');
   const spanRef = useRef<HTMLSpanElement>(null);
   const MDXLayout = useMDXComponent(HoverPost);
+
+  const HoverComponents = {
+    pre: Pre,
+    YoutubeComponent: YoutubeDummy,
+    a: CustomLink,
+    HoverLink: HoverLinkDummy,
+    code: Code,
+    u: UnderLine,
+    Alert: Alert,
+    Cap: FigCaption,
+  };
 
   // HoverLinkBox가 나타나는 좌표를 계산해 반영함.
   useEffect(() => {
