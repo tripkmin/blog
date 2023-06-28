@@ -5,12 +5,13 @@ import { useRouter } from 'next/navigation';
 import { fontMono } from '@/libs/fonts';
 import Link from 'next/link';
 import { CloseIcon, OpenInFullIcon, OpenInNewIcon } from '@/styles/svgIcons';
-import { HoverComponents, useMDXLayout } from '.';
+import { HoverComponents } from '.';
 import useDebounce from '@/hooks/useDebounce';
+import { useMDXComponent } from 'next-contentlayer/hooks';
 
 interface Props {
   HoverPost?: any;
-  title: any;
+  title: string;
   sourceFileName: string;
   children: ReactNode;
 }
@@ -26,7 +27,7 @@ export default function HoverLinkEl({
   const debouncedIsHovered = useDebounce(isHovered, 300);
   const [transformValue, setTransformValue] = useState('0px');
   const spanRef = useRef<HTMLSpanElement>(null);
-  const MDXLayout = useMDXLayout(HoverPost);
+  const MDXLayout = useMDXComponent(HoverPost);
 
   // HoverLinkBox가 나타나는 좌표를 계산해 반영함.
   useEffect(() => {
