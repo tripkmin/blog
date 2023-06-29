@@ -291,6 +291,273 @@ JavaScript와 React에서 사용하는 '인스턴스' 개념은 약간 다릅니
 
 왜 const를 쓰느냐? useState()를 불러서 할당을 하는거임. `name = 'lee'` 이런 식으로 할당하지 않음. 그러므로 상수형으로 써도 괜찮음.
 
+### 객체나 배열을 변경하고 싶을 때
+
+```jsx
+import { useState } from 'react';
+
+export default function App(){
+	// 이렇게 쓸 수도 있겠지만
+	// const [name, setName] = useSTate('')
+	// const [age, setAge] = useState(0)
+
+	// 객체 형식으로 이렇게 묶었다고 쳐보자
+	const [person, setPerson] = useState({
+		name: '',
+		age: 0
+	})
+
+	const nameHandler = (e) => {
+		setPerson({...person, name: e.target.value })
+	}
+
+	const ageHandler = (e) => {
+		setPerson({...person, age: e.target.value})
+	}
+
+	return (
+		<form>
+			<input type="text" onChange={nameHandler}>
+			<input type="number" onChange={ageHandler}>
+		</form>
+	)
+}
+```
+
+이럴 경우 저 객체를 업데이트 하는 방법은 저렇게 원래 값을 spread 연산자를 통해서 붙여넣고 덮어쓰고 싶은 값을 뒤에다가 써서 오버라이딩 하면 됨.
+
+근데 이전 상태를 고려해야 하는 상황에서는 저렇게 쓰는 대신 setState 함수 안에 콜백 함수를 집어넣어 이전 상태를 기준으로 상태변경을 보장하는 로직으로 작성해야 함.
+
+```jsx
+import {useState} from 'react'
+
+export default function App(){
+	const [state, setState] = useState(0)
+}
+
+	const sum(){
+		setState(state + 1);
+		setState(state + 2);
+		setState(state + 3);
+		setState(state + 4);
+	}
+
+	const prevSum(){
+		setState(prev => prev + 1);
+		setState(prev => prev + 2);
+		setState(prev => prev + 3);
+		setState(prev => prev + 4);
+	}
+
+	return (
+		<div>
+			<p>결과: {state}</p>
+			<button onClick={sum}>실행</button>
+			// 실행시 4
+		</div>
+	)
+```
+
+이전값을 적용해서 모든 값을 적용시키고 싶다면 prevSum처럼 해야함
+
+```
+function personNameHandler(event){
+	setPerson({...person, })
+}
+
+```
+
+양방향 바인딩을 통해 유기적인 흐름을 만들어낼 수 있음. (ex: 제출 뒤 양식을 초기화시키고 싶을 때 state만 초기화 시켜버리면 알아서 양식 내용까지..)
+
+## State + Props
+
+만약 컴포넌트 구조가
+
+- App
+  - AddCardInput
+  - Card
+
+이렇다고 가정하자. 여기서 App에서 정의되어있는
+
+```jsx
+export default function App() {
+  const [people, setPeople] = useState([
+    { name: 'lee', age: 20 },
+    { name: 'kim', age: 30 },
+    { name: 'park', age: 40 },
+  ]);
+
+  return (
+    <>
+      <AddCardInput />
+      {people.map((person, idx) => {
+        <Card person={person} />;
+      })}
+    </>
+  );
+}
+```
+
+이렇게 되어있다고 치자. 여기서 AddCardInput 컴포넌트에서 상위 App 컴포넌트로 정보를 이동시키려면 어떻게 해야할까?
+
+두 가지 방법이 있다.
+
+1. App에 state를 만들어놓고 그걸 아래로 빼버리는 방법
+2. AddCardInput에 핸들러 함수를 보내서 위로 빼내어 보내는 방법
+
+```jsx
+import { useState } from 'react';
+
+export default function App() {
+  const [people, setPeople] = useState([
+    { name: 'lee', age: 20 },
+    { name: 'kim', age: 30 },
+    { name: 'park', age: 40 },
+  ]);
+
+  const savePersonDataHandler = personData => {
+    setPeople(prev => [...prev, personData]);
+  };
+
+  return (
+    <>
+      <AddCardInput onSavePersonData={savePersonDataHandler} />
+      {people.map((person, idx) => (
+        <Card key={idx} person={person} />
+      ))}
+    </>
+  );
+}
+```
+
+```jsx
+import { useState } from 'react';
+
+export function AddCardInput({ onSavePersonData }) {
+  const [name, setName] = useState('');
+  const [age, setAge] = useState(0);
+
+  const nameHandler = e => {
+    setName(e.target.value);
+  };
+
+  const ageHandler = e => {
+    setAge(e.target.value);
+  };
+
+  const submitHandler = e => {
+    e.preventDefault();
+    const personData = { name: name, age: age };
+    onSavePersonData(personData);
+    setName('');
+    setAge(0);
+  };
+
+  return (
+    <form onSubmit={submitHandler}>
+      <input type="text" value={name} onChange={nameHandler} />
+      <input type="number" value={age} onChange={ageHandler} />
+      <button type="submit">제출</button>
+    </form>
+  );
+}
+```
+
+## Presentational vs Stateful Components
+
+```jsx title="app.jsx" showLineNumbers
+import { useState } from 'react';
+import AddCardInput from './AddCardInput';
+import Card from './Card';
+import './App.css';
+
+function App() {
+  const [people, setPeople] = useState([
+    { name: 'lee', age: 20 },
+    { name: 'kim', age: 30 },
+    { name: 'park', age: 40 },
+  ]);
+
+  const savePersonDataHandler = personData => {
+    setPeople(prev => [...prev, personData]);
+  };
+
+  return (
+    <>
+      <AddCardInput onSavePersonData={savePersonDataHandler} />
+      {people.map((person, idx) => (
+        <Card key={idx} person={person} />
+      ))}
+    </>
+  );
+}
+
+export default App;
+```
+
+```jsx title="Card.jsx"
+export default function Card({ person }) {
+  return (
+    <div>
+      <p>이름: {person.name}</p>
+      <p>나이: {person.age}</p>
+    </div>
+  );
+}
+```
+
+여기서 App이나 AddCardInput과 같이 state가 존재하는 컴포넌트가 있는 반면, props를 받아 단순히 출력에만 기여하는 Card 컴포넌트와 같은 것들이 있음.
+이렇게 state를 갖고있는 컴포넌트들을 Stateful, Smart 컴포넌트라고 부르고, state 없이 단순 출력에만 기여하는 컴포넌트들을 Stateless, Dumb, Presentational 컴포넌트라고 부름.
+
+onClick과 같은 이벤트 리스너 프로퍼티에는 어떤 값을 전달해야 하나요?
+
+- 이벤트가 발생했을 때 실행해야 하는 함수의 포인터
+
+실행될 함수의 “포인터”를 onClick 등의 값으로 전달해야 합니다. 그러면 이벤트가 발생했을 때 “사용자를 대신하여” React가 함수를 실행합니다.
+
+## map()을 활용한 코드 단축
+
+>
+
+#### (연구해야 됨) 왜 key를 넣어야 하는가?
+
+[링크](https://velog.io/@yeonbot/React%EC%97%90%EC%84%9C-key%EC%9D%98-%EC%97%AD%ED%95%A0-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EB%A5%BC-%EB%8B%A4%EC%8B%9C%EA%B7%B8%EB%A6%AC%EB%8A%94-%EA%B3%BC%EC%A0%95)
+
+## 조건문
+
+조건을 단축하는 방법
+name은 filteredName은 배열.
+
+1. 삼항 연산자
+
+```jsx
+{
+  filteredName.length === 0 ? <p>필터된 게 없슈</p> : <p>{/* 필터된 목록들 */}</p>;
+}
+```
+
+2. && 연산자
+
+```jsx
+{ filteredName.length === 0 && /* 필터된게 없다는 안내문 */ }
+{ filteredName.length > 0 && /* 필터된 목록들을 보여주기 */ }
+```
+
+3. 아예 JSX 문법 시작 전에 if로 미리 갈무리 쳐놓기
+
+```jsx
+let filterContents = <p>필터된 게 없슈</p>;
+
+if (filteredName.length > 0) {
+  filterContents = filterElements.map(/* 세부 내용 생략 */);
+}
+
+return (
+  /* 생략 */
+  { filterContents }
+);
+```
+
 ---
 
 [^1]: 핵심 비즈니스 로직이 뭐지?
