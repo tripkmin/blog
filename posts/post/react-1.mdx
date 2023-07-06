@@ -19,7 +19,7 @@ techs:
 
 create-react-app을 통해 생성되는 파일 폴더 구조
 
-```
+```txt
 my-app/
   README.md
   node_modules/
@@ -52,7 +52,7 @@ root.render(<App />);
 
 ### index.html
 
-```HTML title="index.html"
+```html title="index.html"
 <!DOCTYPE html>
 <html lang="ko">
   <head>
@@ -68,7 +68,6 @@ root.render(<App />);
     <div id="root"></div>
   </body>
 </html>
-
 ```
 
 이 단일 HTML 파일이 브라우저에서 로딩됨. 오직 이 HTML만 갖고 React App을 실행할 거임. 이런 SPA에서는 한 개의 HTML 파일만 사용하고 그 외 웹 페이지상의 모든 UI 변경은 React가 처리함. 이 HTML 파일 하나가 React가 관리하는 UI 전반이 렌더링 될 위치가 됨.
@@ -156,8 +155,8 @@ export default function App() {
 
 ```HTML title="출력 결과" showLineNumber
 <div class="wrapper">
-	<h1>인사</h1>
-	<p>안녕하세요</p>
+  <h1>인사</h1>
+  <p>안녕하세요</p>
 </div>
 ```
 
@@ -242,7 +241,7 @@ JavaScript에서는 함수가 호출될 때마다 새로운 실행 컨텍스트�
 
 근데 문제는 리액트는 절대 반복하지 않는다는 것임. 즉 렌더링 되었을 때 위의 과정들을 실행하고 그 후에는 끝임. 근데 나는 화면에 보이는 걸 업데이트 하고 싶다. 그럴 때 쓰는 것이 State. 즉 특정 어떤 것이 변경되었고 특정 컴포넌트가 재평가되어야 한다고 말하는 문법.
 
-이 기능을 사용하고 싶다면 import { useState } from 'react'를 해서 useState 함수를 불러와야 함. 컴포넌트 바깥에서 호출되거나, 혹은 중첩된 함수 안에서 호출할 수 없고 오직 컴포넌트 함수 안에서 직접적으로 호출되어야 함. 예외는 있긴 함. **(나중에 설명)**
+이 기능을 사용하고 싶다면 `import { useState } from 'react'`를 해서 useState 함수를 불러와야 함. 컴포넌트 바깥에서 호출되거나, 혹은 중첩된 함수 안에서 호출할 수 없고 오직 컴포넌트 함수 안에서 직접적으로 호출되어야 함. 예외는 있긴 함. **(나중에 설명)**
 
 > use로 시작하는 것들은 모두 훅임.
 
@@ -346,31 +345,31 @@ JavaScript와 React에서 사용하는 '인스턴스' 개념은 약간 다릅니
 ```jsx
 import { useState } from 'react';
 
-export default function App(){
-	// 이렇게 쓸 수도 있겠지만
-	// const [name, setName] = useSTate('')
-	// const [age, setAge] = useState(0)
+export default function App() {
+  // 이렇게 쓸 수도 있겠지만
+  // const [name, setName] = useSTate('')
+  // const [age, setAge] = useState(0)
 
-	// 객체 형식으로 이렇게 묶었다고 쳐보자
-	const [person, setPerson] = useState({
-		name: '',
-		age: 0
-	})
+  // 객체 형식으로 이렇게 묶었다고 쳐보자
+  const [person, setPerson] = useState({
+    name: '',
+    age: 0,
+  });
 
-	const nameHandler = (e) => {
-		setPerson({...person, name: e.target.value })
-	}
+  const nameHandler = e => {
+    setPerson({ ...person, name: e.target.value });
+  };
 
-	const ageHandler = (e) => {
-		setPerson({...person, age: e.target.value})
-	}
+  const ageHandler = e => {
+    setPerson({ ...person, age: e.target.value });
+  };
 
-	return (
-		<form>
-			<input type="text" onChange={nameHandler}>
-			<input type="number" onChange={ageHandler}>
-		</form>
-	)
+  return (
+    <form>
+      <input type="text" onChange={nameHandler} />
+      <input type="number" onChange={ageHandler} />
+    </form>
+  );
 }
 ```
 
@@ -379,33 +378,29 @@ export default function App(){
 근데 이전 상태를 고려해야 하는 상황에서는 저렇게 쓰는 대신 setState 함수 안에 콜백 함수를 집어넣어 이전 상태를 기준으로 상태변경을 보장하는 로직으로 작성해야 함.
 
 ```jsx
-import {useState} from 'react'
-
-export default function App(){
-	const [state, setState] = useState(0)
+import { useState } from 'react';
+export default function App() {
+  const [state, setState] = useState(0);
 }
-
-	const sum(){
-		setState(state + 1);
-		setState(state + 2);
-		setState(state + 3);
-		setState(state + 4);
-	}
-
-	const prevSum(){
-		setState(prev => prev + 1);
-		setState(prev => prev + 2);
-		setState(prev => prev + 3);
-		setState(prev => prev + 4);
-	}
-
-	return (
-		<div>
-			<p>결과: {state}</p>
-			<button onClick={sum}>실행</button>
-			// 실행시 4
-		</div>
-	)
+const sum = () => {
+  setState(state + 1);
+  setState(state + 2);
+  setState(state + 3);
+  setState(state + 4);
+};
+const prevSum = () => {
+  setState(prev => prev + 1);
+  setState(prev => prev + 2);
+  setState(prev => prev + 3);
+  setState(prev => prev + 4);
+};
+return (
+  <div>
+    <p>결과: {state}</p>
+    <button onClick={sum}>실행</button>
+    // 실행시 4
+  </div>
+);
 ```
 
 이전값을 적용해서 모든 값을 적용시키고 싶다면 prevSum처럼 해야함
@@ -591,10 +586,10 @@ name은 filteredName은 배열.
 
 ```jsx
 {filteredName.length === 0 &&
-	// 필터된게 없다는 안내문
+  // 필터된게 없다는 안내문
 }
 {filteredName.length > 0 &&
-	// 필터된 목록들을 보여주기
+  // 필터된 목록들을 보여주기
 }
 ```
 
@@ -621,21 +616,21 @@ import React, { useState } from 'react';
 import Button from '../../UI/Button/Button';
 import './TodoInput.css';
 
-const TodoInput = ({onAddGoal}) => {
+const TodoInput = ({ onAddGoal }) => {
   const [enteredValue, setEnteredValue] = useState('');
-  const [isValid, setIsValid] = useState(true)
+  const [isValid, setIsValid] = useState(true);
 
   const TodoInputChangeHandler = e => {
-		setIsValid(true)
+    setIsValid(true);
     setEnteredValue(e.target.value);
   };
 
   const formSubmitHandler = event => {
     event.preventDefault();
-    if(enteredValue === ''){
-      setIsValid(false)
+    if (enteredValue === '') {
+      setIsValid(false);
       return;
-    }    }
+    }
   };
 
   return (
@@ -650,7 +645,6 @@ const TodoInput = ({onAddGoal}) => {
 };
 
 export default TodoInput;
-
 ```
 
 이 코드의 가장 큰 문제: style을 직접 적용했기 때문에 우선순위가 바뀜. 요딴식으로 inline 스타일링하면 훗날의 내가 개고생하는 경우가 생김.
@@ -665,28 +659,32 @@ import React, { useState } from 'react';
 import Button from '../../UI/Button/Button';
 import './TodoInput.css';
 
-const TodoInput = ({onAddGoal}) => {
+const TodoInput = ({ onAddGoal }) => {
   const [enteredValue, setEnteredValue] = useState('');
-  const [isValid, setIsValid] = useState(true)
+  const [isValid, setIsValid] = useState(true);
 
   const TodoInputChangeHandler = e => {
-		setIsValid(true)
+    setIsValid(true);
     setEnteredValue(e.target.value);
   };
 
   const formSubmitHandler = event => {
     event.preventDefault();
-    if(enteredValue === ''){
-      setIsValid(false)
+    if (enteredValue === '') {
+      setIsValid(false);
       return;
-    }    }
+    }
   };
 
   return (
     <form onSubmit={formSubmitHandler}>
       <div className="form-control">
-        <label style={!isValid ? {color: 'red'} : undefined}>Course Goal</label>
-        <input style={!isValid ? {border: '1px solid red'} : undefined} type="text" onChange={TodoInputChangeHandler} />
+        <label style={!isValid ? { color: 'red' } : undefined}>Course Goal</label>
+        <input
+          style={!isValid ? { border: '1px solid red' } : undefined}
+          type="text"
+          onChange={TodoInputChangeHandler}
+        />
       </div>
       <Button type="submit">Add Goal</Button>
     </form>
@@ -753,33 +751,37 @@ import './TodoInput.css';
 
 ```jsx
 import React, { useState } from 'react';
-import styles from '/'
+import styles from '/';
 
 import Button from '../../UI/Button/Button';
 import './TodoInput.css';
 
-const TodoInput = ({onAddGoal}) => {
+const TodoInput = ({ onAddGoal }) => {
   const [enteredValue, setEnteredValue] = useState('');
-  const [isValid, setIsValid] = useState(true)
+  const [isValid, setIsValid] = useState(true);
 
   const TodoInputChangeHandler = e => {
-		setIsValid(true)
+    setIsValid(true);
     setEnteredValue(e.target.value);
   };
 
   const formSubmitHandler = event => {
     event.preventDefault();
-    if(enteredValue === ''){
-      setIsValid(false)
+    if (enteredValue === '') {
+      setIsValid(false);
       return;
-    }    }
+    }
   };
 
   return (
     <form onSubmit={formSubmitHandler}>
       <div className="form-control">
-        <label style={!isValid ? {color: 'red'} : undefined}>Course Goal</label>
-        <input style={!isValid ? {border: '1px solid red'} : undefined}type="text" onChange={TodoInputChangeHandler} />
+        <label style={!isValid ? { color: 'red' } : undefined}>Course Goal</label>
+        <input
+          style={!isValid ? { border: '1px solid red' } : undefined}
+          type="text"
+          onChange={TodoInputChangeHandler}
+        />
       </div>
       <Button type="submit">Add Goal</Button>
     </form>
@@ -799,28 +801,32 @@ import React, { useState } from 'react';
 import Button from '../../UI/Button/Button';
 import './TodoInput.css';
 
-const TodoInput = ({onAddGoal}) => {
+const TodoInput = ({ onAddGoal }) => {
   const [enteredValue, setEnteredValue] = useState('');
-  const [isValid, setIsValid] = useState(true)
+  const [isValid, setIsValid] = useState(true);
 
   const TodoInputChangeHandler = e => {
-		setIsValid(true)
+    setIsValid(true);
     setEnteredValue(e.target.value);
   };
 
   const formSubmitHandler = event => {
     event.preventDefault();
-    if(enteredValue === ''){
-      setIsValid(false)
+    if (enteredValue === '') {
+      setIsValid(false);
       return;
-    }    }
+    }
   };
 
   return (
     <form onSubmit={formSubmitHandler}>
       <div className="form-control">
-        <label style={!isValid ? {color: 'red'} : undefined}>Course Goal</label>
-        <input style={!isValid ? {border: '1px solid red'} : undefined}type="text" onChange={TodoInputChangeHandler} />
+        <label style={!isValid ? { color: 'red' } : undefined}>Course Goal</label>
+        <input
+          style={!isValid ? { border: '1px solid red' } : undefined}
+          type="text"
+          onChange={TodoInputChangeHandler}
+        />
       </div>
       <Button type="submit">Add Goal</Button>
     </form>
@@ -832,39 +838,41 @@ export default TodoInput;
 
 사용법만
 
-```js
+```jsx
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
 
 const Button = styled.button`
-	padding: 20px;
-	border-radius: 10px;
-	background-color: gray;
-	border: 1px solid black;
-	transition: background-color 1s;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: gray;
+  border: 1px solid black;
+  transition: background-color 1s;
 
-	&:hover {
-		background-color: white;
-	}
+  &:hover {
+    background-color: white;
+  }
 
-	&:active {
-		transform: scale(0.85);
-	}
+  &:active {
+    transform: scale(0.85);
+  }
 
-	${props => props.$primary && `
+  ${props =>
+    props.$primary &&
+    `
 		background-color: blue;
 		color: white;
 	`}
 `;
 
-export default function App = () => {
-	return (
-		<div>
-			<Button>그냥 버튼</Button>
-			<Button $primary>$primary인 버튼</Button>
-		</div>
-	);
-};
+export default function App() {
+  return (
+    <div>
+      <Button>그냥 버튼</Button>
+      <Button $primary>$primary인 버튼</Button>
+    </div>
+  );
+}
 ```
 
 ## 에러 핸들링
@@ -898,16 +906,16 @@ break-point 하는 방법
 ```jsx
 // 일반 JSX 컴포넌트
 export default SomeComponent(){
-	return (
-		<div></div>
-		<div></div>
-	)
+  return (
+    <div></div>
+    <div></div>
+  )
 }
 
 // 이게 Babel로 변환되면 이렇게 됨
 return (
-	React.createElement(div, null)
-	React.createElement(div, null)
+  React.createElement(div, null)
+  React.createElement(div, null)
 )
 ```
 
@@ -1136,7 +1144,7 @@ state의 변경에 따라서 뭔가를 하고 싶을 때 사용.
 2. 의존성 배열에 특정 변수가 있을 경우 아래 상황에서 실행됨
    1. 컴포넌트가 처음 실행될 때
    2. 의존성 배열 안의 변수 값이 바뀔 때
-3. return () => { 함수 } 가 있다면 useEffect 함수 실행 전에 실행됨
+3. `return () => { 함수 }` 가 있다면 useEffect 함수 실행 전에 실행됨
    1. 이를 활용해 컴포넌트의 언마운트 시에 함수를 실행시킬 수도 있음.
 
 만약 의존성 배열을 제거해버린다면
@@ -1247,13 +1255,15 @@ export default function App() {
       <button
         onClick={() => {
           setValue(prev => ({ ...prev, name: 'park' }));
-        }}>
+        }}
+      >
         이름 변경
       </button>
       <button
         onClick={() => {
           setValue(prev => ({ ...prev, age: 45 }));
-        }}>
+        }}
+      >
         나이 변경
       </button>
     </div>
@@ -1282,13 +1292,15 @@ export default function App() {
       <button
         onClick={() => {
           setValue(prev => ({ ...prev, name: 'park' }));
-        }}>
+        }}
+      >
         이름 변경
       </button>
       <button
         onClick={() => {
           setValue(prev => ({ ...prev, age: 45 }));
-        }}>
+        }}
+      >
         나이 변경
       </button>
     </div>
@@ -1315,25 +1327,23 @@ const [state, dispatch] = useRedcuer(reducer, initialState);
 
 ```jsx
 // counterState의 초기 값을 결정함.
-const counterInitialState = {count: 0}
+const counterInitialState = { count: 0 };
 
 // counterDispatch에 담긴 타입에 맞게 특정 행동을 실행하도록 함
-const counterReducer = (state, action){
-// state에는 counterState의 최신 state가 들어있음
-// action에는 counterDispatch의 소괄호 안에 들어있는 정보가 들어있음.
-	switch(action.type){
-		case "INCREMENT": // type의 경우 관습적으로 대문자로 작성함
-			return { count: state.count + 1 }
-		case "DECREMENT":
-			return { count: state.count - 1}
-		default:
-			return state
-	}
-}
+const counterReducer = (state, action) => {
+  // state에는 counterState의 최신 state가 들어있음
+  // action에는 counterDispatch의 소괄호 안에 들어있는 정보가 들어있음.
+  switch (action.type) {
+    case 'INCREMENT': // type의 경우 관습적으로 대문자로 작성함
+      return { count: state.count + 1 };
+    case 'DECREMENT':
+      return { count: state.count - 1 };
+    default:
+      return state;
+  }
+};
 
-const [counterState, counterDispatch] = useReducer(counterRedcuer, counterInitialState)
-
-
+const [counterState, counterDispatch] = useReducer(counterRedcuer, counterInitialState);
 ```
 
 용도
@@ -1450,19 +1460,27 @@ reportWebVitals();
 
 ```jsx
 export default function App() {
-  const ctx = useContext(Context);
+  const ctx = useContext(Context);
 
-	return (
-		<>
-			<button onClick={()=>{console.log(ctx.number)}}>
-				컨텍스트 숫자 출력
-			</button>
-			<button onClick={()=>{setNumber(prev => prev + 1)}}>
-				컨텍스트 숫자 1 더하기
-			</button>
-		</>
-	)
-
+  return (
+    <>
+      <button
+        onClick={() => {
+          console.log(ctx.number);
+        }}
+      >
+        컨텍스트 숫자 출력
+      </button>
+      <button
+        onClick={() => {
+          setNumber(prev => prev + 1);
+        }}
+      >
+        컨텍스트 숫자 1 더하기
+      </button>
+    </>
+  );
+}
 ```
 
 추가) 1번 과정에서 createContext 소괄호 안에 더미 값을 집어넣어주면 자동완성이 쉽게 된다
@@ -1499,7 +1517,8 @@ export default function App() {
       value={{
         id: '',
         isLoggedIn: false,
-      }}>
+      }}
+    >
       <div>
         <Test />
       </div>
@@ -1530,12 +1549,10 @@ import { useContext } from 'react';
 import Context from '../../store/context';
 
 export default function Test() {
-	const ctx = useContext(Context);
-	console.log(ctx);
+  const ctx = useContext(Context);
+  console.log(ctx);
 
-	return (
-		<div></div>;
-	)
+  return <div></div>;
 }
 ```
 
@@ -1551,11 +1568,10 @@ export default function Test() {
 
 ## Memo
 
-{
+(
 부모 컴포넌트가 렌더링 되는데 아래 컴포넌트들은 그대로인 상황의 사진
 근데 아래 컴포넌트가 개많은데 부모 컴포넌트가 렌더링된다는 이유만으로 다시 다 실행이 되는 구조의 사진
-
-}
+)
 
 불필요한 자식 렌더링.
 
@@ -1688,28 +1704,7 @@ setValue2(2);
 useCallback이 함수 객체를 저장해서 컴포넌트가 재실행되어도 함수를 다시 생성하지 않고 그대로 가지고 있다가 특정 state가 변경되었을 때만 다시 생성되도록 할 수 있는 훅이라면, useMemo는 데이터를 저장함.
 
 ```jsx
-export default function App(){
-	return (
-		<div>
-			<SomeComponents item=[1,55,90,24,8] />
-		</div>
-	)
-}
 
-//
-
-export default function SomeComponents({item}){
-	const sortedItem = [...item].sort((a, b) => a - b)
-	// 오름차순 정렬
-
-	return (
-		<div>
-			{sortedItem.map(num => (
-				<p>{num}</p>
-			))}
-		</div>
-	)
-}
 ```
 
 정렬은 성능 비용이 많이 드는 작업. 저 item이 5개라서 망정이지 10억개가 있다고 상상해보자. 그리고 이걸 매번 컴포넌트가 재실행될 때마다 다시 sort 작업을 해야한다면 갑자기 00년대 조선컴으로 돌아가는 기분을 맛볼 수 있다.
@@ -1717,29 +1712,27 @@ export default function SomeComponents({item}){
 아까 컴포넌트의 재렌더링 시 함수의 재생성을 막아 성능을 향상시켰던 것처럼, 데이터의 재생성도 막아 성능을 향상시킬 수 있는 방법이 있는데 그게 바로 `useMemo()`임.
 
 ```jsx
-import React, { useMemo } from 'react';
-
 export default function App() {
-  const item = useMemo(() => [1, 55, 90, 24, 8], []);
-
   return (
     <div>
-      <SomeComponents item={item} />
+      <SomeComponents item={[1, 55, 90, 24, 8]} />
     </div>
   );
 }
 
 export default function SomeComponents({ item }) {
-  const sortedItem = useMemo(() => [...item].sort((a, b) => a - b), [item]);
+  const sortedItem = [...item].sort((a, b) => a - b);
+  // 오름차순 정렬
 
   return (
     <div>
-      {sortedItem.map((num) => (
-        <p key={num}>{num}</p>
+      {sortedItem.map(num => (
+        <p>{num}</p>
       ))}
     </div>
   );
 }
+
 ```
 
 ## 네트워크 사용
