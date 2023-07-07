@@ -1755,6 +1755,184 @@ playground에 올려놨음. 그거 가지고 설명할 것.
 
 앞에 use를 붙여야 react 측에서 훅임을 알 수 있음.
 
+
+
+---
+---
+
+- 컴포넌트 한, 두개 정도를 왔다갔다하는 이런 상황이면 문제가 없음
+- 근데 컴포넌트 세, 네개를 넘어가는 props 전송은 개발자를 굉장히 곶통스럽게 함.
+- 그걸 모를리가 없는 리액트 개발진은 Context라는 전역 state 보관함 같은 걸 사용해 props 전송없이 ContextProvider로 감싸진 곳에서는 해당 Context를 모두 이용 가능하도록 설정됨.
+
+
+일단 createContext()로 context 보관함을 만든다.
+```jsx
+const Context = React.createContext();
+```
+그리고 Context 보관함을 갖다 쓸 수 있도록 Provider로 다른 컴포넌트를 감싼다. 
+```jsx
+export default function App(){
+  return (
+    <Context.Provider>
+      /* 다른 여러 컴포넌트들 */
+    </Context.Provider>
+  )
+}
+```
+
+그리고 Provider에 `value` props에다 내가 전달하고 싶은 값들을 정한다
+```jsx
+export default function App(){
+  const [name, setName] = useState('lee')
+  const [age, setAge] = useState(20)
+
+  return (
+    <Context.Provider value={ {name, age} }>
+      /* 다른 여러 컴포넌트들 */
+    </Context.Provider>
+  )
+}
+```
+
+그리고 저렇게 감싸진 컴포넌트 안에서 context 보관함을 사용하려면
+
+```jsx
+import Context from '@/src/store'
+
+export default function DeepComponent(){
+  const ctx = useContext(Context)
+
+  return (
+    <div>
+      <p>{name}</p>
+    </div>
+  )
+}
+```
+
+
+
+
+근데 실은 얘는 잘 안쓰고 redux나 jotai, zustand 같은 걸 쓰는데... 그 이유가 있다.
+1. state를 변경하면 쓸데없는 컴포넌트들까지 전부 리렌더리링이 됨.
+
+```jsx
+import React, { createContext, useContext, useState } from 'react';
+
+const MyContext = createContext();
+
+const ParentComponent = () => {
+  const [count, setCount] = useState(0);
+
+  return (
+    <MyContext.Provider value={count}>
+      <ChildComponent />
+    </MyContext.Provider>
+  );
+};
+
+const ChildComponent = () => {
+  const count = useContext(MyContext);
+  console.log('ChildComponent rendering'); // 콘솔 로그 추가
+
+  return <div>Count: {count}</div>;
+};
+```
+
+여기서 ParentComponent만 변경했음에도 ChildComponent의 컴포넌트까지 재렌더링 됨. 
+
+```jsx title="store/context.jsx"
+import { createContext } from 'react';
+
+const Context = createContext({
+  id: '',
+  isLoggedIn: false,
+});
+
+export default Context;
+```
+```jsx title="App.jsx"
+import Test from './Components/Test/Test';
+import Context from './store/context';
+
+export default function App() {
+  return (
+    <Context.Provider
+      value={{
+        id: '',
+        isLoggedIn: false,
+      }}
+    >
+      <div>
+        <Test />
+      </div>
+    </Context.Provider>
+  );
+}
+```
+```jsx title="Test.jsx"
+import Context from '../../store/context';
+
+export default function Test() {
+  return (
+    <Context.Consumer>
+      {ctx => {
+        console.log(ctx);
+        return <div></div>;
+      }}
+    </Context.Consumer>
+  );
+}
+```
+
+#### Context.Consumer 대신 useContext로 쓰기
+```jsx title="useContext"
+import { useContext } from 'react';
+import Context from '../../store/context';
+
+export default function Test() {
+  const ctx = useContext(Context);
+  console.log(ctx);
+
+  return (
+    <div></div>;
+  )
+}
+```
+
+#### Context를 동적으로 만들어보자
+
+
+
+
+## 성능 관련
+
+### 리액트의 컨셉 설명
+
+React는 UI를 만드는 자바스크립트 라이브러리고, 컴포넌트를 활용한다는 컨셉은 변하지 않음.  리액트 DOM은 웹에 대한 인터페이스인데, 리액트는 웹을 아예 모름. 컴포넌트만 어떻게 다루는 지 암. 리액트는 상태, 컴포넌트에만 집중하는 것임. 변화가 생기고 하는 그런 이벤트를 ReactDOM같은 곳에 전달하고, ReactDOM은 실제 DOM과 연결되어 유저에게 직접적으로 보이는 것을 관리함. 
+
+Components에서 Props, Context, State가 변경되면 이를 사용하는 컴포넌트는 리액트를 통해 변경되면 . 리액트는 이 컴포넌트가 화면에 새로운 것을 그리려고 한다면 리액트 dom에다가 알려줘서 리액트DOM이 그걸 학 함.
+
+ ---
+해당 강의는 JavaScript 라이브러리인 React의 작동 방식에 대해 설명하고 있습니다. React의 핵심 개념들을 이해하는 것이 중요하다고 강조하면서, 컴포넌트, React DOM, 상태(State), props, 컨텍스트(Context) 등에 대해 설명하였습니다.
+
+1. **컴포넌트**: React는 사용자 인터페이스를 구축하기 위해 컴포넌트라는 개념을 사용합니다. 컴포넌트는 사용자 인터페이스를 구성하는 개별 부품이며, 이를 통해 사용자 인터페이스를 효율적으로 구성하고 업데이트합니다.
+    
+2. **React DOM**: React DOM은 웹에 대한 인터페이스입니다. React 자체는 웹을 알지 못하며, 브라우저와도 직접적인 관계가 없습니다. React는 컴포넌트의 관리와 상태 객체 관리에 집중하며, 이에 대한 업데이트도 컴포넌트를 통해 이루어집니다. 실제 HTML 요소들이 화면에 어떻게 표시되는지는 React DOM이 관리합니다.
+    
+3. **상태(State) 및 Props**: React는 컴포넌트 내부의 데이터인 '상태'와 컴포넌트에 전달하는 데이터인 'props'를 관리합니다. 이들은 컴포넌트간의 상호작용을 가능하게 합니다.
+    
+4. **컨텍스트(Context)**: React는 컴포넌트 전체의 데이터인 '컨텍스트'도 다룹니다. 이를 통해 컴포넌트 간 데이터를 공유할 수 있습니다.
+    
+
+이러한 개념들이 변경되면, 해당 컴포넌트가 React를 통해 변경되고, React는 이 컴포넌트가 화면에 어떤 새로운 내용을 표시할지를 판단합니다. 이렇게 결정된 변경 사항은 React DOM에 전달되고, React DOM은 실제 화면에 이를 반영합니다.
+
+React의 작동 방식의 핵심은 '가상 DOM'입니다. React는 가상 DOM을 사용하여 앱이 마지막으로 만든 컴포넌트 트리의 상태와 현재의 상태를 비교하고, 필요한 부분만 실제 DOM에 반영하여 성능을 향상시킵니다.
+
+컴포넌트의 상태나 props, 컨텍스트가 변경되면 React는 컴포넌트 함수를 재실행하여 이를 재평가하며, 그 결과에 따라 필요한 부분만 실제 DOM에 업데이트합니다. 이렇게 React는 컴포넌트와 실제 DOM 사이의 효율적인 통신을 통해 화면을 빠르게 업데이트하고 성능을 향상시킵니다. ---
+
+
+
 ---
 
 [^1]: 핵심 비즈니스 로직이 뭐지?
